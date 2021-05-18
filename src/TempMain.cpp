@@ -11,7 +11,7 @@ int main()
     try
     {
         Configuration::Configuration config;
-        std::cout << config.get("1") << std::endl;
+        std::cout << config.get("abcd") << std::endl;
 
         // for (auto e : config.propertiesMapList().at(0).properties())
         // {
