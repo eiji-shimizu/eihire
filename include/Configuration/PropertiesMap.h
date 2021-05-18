@@ -1,3 +1,6 @@
+#ifndef EIHIRE_CONFIGURATION_PropertiesMap_INCLUDED
+#define EIHIRE_CONFIGURATION_PropertiesMap_INCLUDED
+
 #include <string>
 #include <map>
 
@@ -11,21 +14,27 @@ namespace Eihire
         public:
             PropertiesMap();
             ~PropertiesMap();
+            PropertiesMap(std::string fileName);
 
-            // コピー禁止
-            PropertiesMap(const PropertiesMap &) = delete;
-            PropertiesMap &operator=(const PropertiesMap &) = delete;
-            // ムーブ禁止
-            PropertiesMap(PropertiesMap &&) = delete;
-            PropertiesMap &operator=(PropertiesMap &&) = delete;
+            // コピー演算
+            PropertiesMap(const PropertiesMap &);
+            PropertiesMap &operator=(const PropertiesMap &);
+            // ムーブ演算
+            PropertiesMap(PropertiesMap &&);
+            PropertiesMap &operator=(PropertiesMap &&);
 
+            void load();
             std::string get(const std::string &key) const;
             void set(const std::string &key, const std::string &value);
+            const std::string &fileName() const;
             const std::map<std::string, std::string> &properties() const;
 
         private:
+            std::string fileName_;
             std::map<std::string, std::string> properties_;
         };
 
     } // namespace Configuration
 } // namespace Eihire
+
+#endif // EIHIRE_CONFIGURATION_PropertiesMap_INCLUDED

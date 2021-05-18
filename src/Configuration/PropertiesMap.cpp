@@ -7,6 +7,25 @@ namespace Eihire
 
         PropertiesMap::PropertiesMap() = default;
         PropertiesMap::~PropertiesMap() = default;
+        PropertiesMap::PropertiesMap(const PropertiesMap &) = default;
+        PropertiesMap &PropertiesMap::operator=(const PropertiesMap &) = default;
+        PropertiesMap::PropertiesMap(PropertiesMap &&) = default;
+        PropertiesMap &PropertiesMap::operator=(PropertiesMap &&) = default;
+
+        PropertiesMap::PropertiesMap(std::string fileName)
+            : fileName_{fileName}
+        {
+            // noop
+        }
+
+        void PropertiesMap::load()
+        {
+            // TODO
+            set("1", "aaaa");
+            set("2", "bbbb");
+            set("33", "cccc");
+            set("4", "dddd");
+        }
 
         std::string PropertiesMap::get(const std::string &key) const
         {
@@ -21,6 +40,11 @@ namespace Eihire
             {
                 properties_.at(key) = value;
             }
+        }
+
+        const std::string &PropertiesMap::fileName() const
+        {
+            return fileName_;
         }
 
         const std::map<std::string, std::string> &PropertiesMap::properties() const
