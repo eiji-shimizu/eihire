@@ -13,6 +13,12 @@ namespace Eihire
             FileCannotOpenException(const std::string &msg);
         };
 
+        class ParseException : public std::runtime_error
+        {
+        public:
+            ParseException(const std::string &msg);
+        };
+
     } // namespace Exception
 } // namespace Eihire
 

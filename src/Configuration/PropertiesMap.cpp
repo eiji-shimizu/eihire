@@ -23,7 +23,6 @@ namespace Eihire
 
         void PropertiesMap::load()
         {
-            // TODO
             std::ifstream ifs((fileName_));
             if (!ifs)
             {
@@ -32,16 +31,23 @@ namespace Eihire
                 throw Exception::FileCannotOpenException(oss.str());
             }
             // ファイル読み込み開始
-            //ifs.exceptions(ifs.exceptions()|ios_base::)
+            // この文以降でifsがbad状態になった場合に例外をスローさせる
+            ifs.exceptions(ifs.exceptions() | std::ios_base::badbit);
             std::string line;
             while (ifs)
             {
                 std::getline(ifs, line);
                 std::ostringstream key("");
                 std::ostringstream value("");
+                bool isComment = false;
                 bool flg = false;
                 for (const char c : line)
                 {
+                    if (c == '#' || c == '!')
+                    {
+                        isComment = true;
+                        break;
+                    }
                     if (flg == false && c == '=')
                     {
                         flg = true;
@@ -53,13 +59,24 @@ namespace Eihire
                         key << c;
                 }
 
-                // '='が見つからなかった場合は構文エラー
-                if(!flg)
+                if (!isComment)
                 {
-                    // TODO: 例外を投げる
+                    // コメント行でないのに'='が見つからなかった場合は構文エラー
+                    if (!flg)
+                    {
+                        std::ostringstream oss("");
+                        oss << "parse error file'" << fileName_ << "'.";
+                        throw Exception::ParseException(oss.str());
+                    }
+                    set(key.str(), value.str());
                 }
-                set(key.str(), value.str());
             }
+        }
+
+        bool PropertiesMap::isContain(const std::string &key) const
+        {
+            auto it = properties_.find(key);
+            return it != properties_.end();
         }
 
         std::string PropertiesMap::get(const std::string &key) const

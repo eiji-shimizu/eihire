@@ -24,6 +24,7 @@ namespace Eihire
             PropertiesMap &operator=(PropertiesMap &&);
 
             void load();
+            bool isContain(const std::string &key) const;
             std::string get(const std::string &key) const;
             void set(const std::string &key, const std::string &value);
             const std::string &fileName() const;

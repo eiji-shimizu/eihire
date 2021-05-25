@@ -1,4 +1,5 @@
 #include "Configuration.h"
+#include "Exception.h"
 
 #include <iostream>
 
@@ -46,6 +47,35 @@ namespace Eihire
             initialize();
         }
 
+        std::string Configuration::find(const std::string &key) const
+        {
+            return find("", key);
+        }
+
+        std::string Configuration::find(const std::string &fileName, const std::string &key) const
+        {
+            for (const PropertiesMap &p : propertiesMapList_)
+            {
+                if (fileName != "")
+                {
+                    if (p.fileName() == fileName)
+                    {
+                        if (p.isContain(key))
+                            return p.get(key);
+                        return "";
+                    }
+                    else
+                        continue;
+                }
+
+                if (p.isContain(key))
+                    return p.get(key);
+                else
+                    continue;
+            }
+            return "";
+        }
+
         std::string Configuration::get(const std::string &key) const
         {
             return get("", key);
@@ -53,25 +83,26 @@ namespace Eihire
 
         std::string Configuration::get(const std::string &fileName, const std::string &key) const
         {
-            for (const PropertiesMap &p : propertiesMapList_)
+            if (fileName != "")
             {
-                if (fileName != "")
+                for (const PropertiesMap &p : propertiesMapList_)
                 {
                     if (p.fileName() == fileName)
                         return p.get(key);
                     else
                         continue;
                 }
-
-                auto it = p.properties().find(key);
-                if (it != p.properties().end())
-                {
-                    return it->second;
-                }
+                // 見つからなかった場合に強制的にout_of_range例外を送出
+                return propertiesMapList_.at(propertiesMapList_.size()).properties().at(key);
+            }
+            
+            for (const PropertiesMap &p : propertiesMapList_)
+            {
+                if (p.isContain(key))
+                    return p.get(key);
                 else
                     continue;
             }
-
             // 見つからなかった場合に強制的にout_of_range例外を送出
             return propertiesMapList_.at(0).properties().at(key);
         }

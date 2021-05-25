@@ -9,5 +9,10 @@ namespace Eihire
         {
         }
 
+        ParseException::ParseException(const std::string &msg)
+            : std::runtime_error(msg)
+        {
+        }
+
     } // namespace Exception
 } // namespace Eihire
