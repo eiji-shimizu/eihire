@@ -37,6 +37,10 @@ namespace Eihire
             while (ifs)
             {
                 std::getline(ifs, line);
+                if (line.length() <= 0)
+                {
+                    continue;
+                }
                 std::ostringstream key("");
                 std::ostringstream value("");
                 bool isComment = false;
