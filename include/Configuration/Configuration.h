@@ -13,10 +13,12 @@ namespace Eihire
         class Configuration
         {
         public:
-            Configuration();
+            // シングルトンのConfigurationオブジェクトを返す
+            static Configuration &getConfiguration();
+            static Configuration &getConfiguration(const std::string &fileName);
+            static Configuration &getConfiguration(const std::vector<std::string> &fileNameList);
+
             ~Configuration();
-            Configuration(const std::string &fileName);
-            Configuration(const std::vector<std::string> &fileNameList);
 
             // コピー禁止
             Configuration(const Configuration &) = delete;
@@ -42,6 +44,7 @@ namespace Eihire
             const std::vector<PropertiesMap> &propertiesMapList() const;
 
         private:
+            Configuration(const std::vector<std::string> &fileNameList);
             void initialize();
 
             std::vector<PropertiesMap> propertiesMapList_;

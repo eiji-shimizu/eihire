@@ -24,8 +24,25 @@ namespace Eihire
 
         } // namespace
 
-        Configuration::Configuration()
-            : fileNameList_{"Eihire.properties"}
+        Configuration &Configuration::getConfiguration()
+        {
+            return getConfiguration("Eihire.properties");
+        }
+
+        Configuration &Configuration::getConfiguration(const std::string &fileName)
+        {
+            std::vector<std::string> vec{fileName};
+            return getConfiguration(vec);
+        }
+
+        Configuration &Configuration::getConfiguration(const std::vector<std::string> &fileNameList)
+        {
+            static Configuration *instance = new Configuration(fileNameList);
+            return *instance;
+        }
+
+        Configuration::Configuration(const std::vector<std::string> &fileNameList)
+            : fileNameList_{fileNameList}
         {
             initialize();
         }
@@ -33,18 +50,6 @@ namespace Eihire
         Configuration::~Configuration()
         {
             // noop
-        }
-
-        Configuration::Configuration(const std::string &fileName)
-            : fileNameList_{fileName}
-        {
-            initialize();
-        }
-
-        Configuration::Configuration(const std::vector<std::string> &fileNameList)
-            : fileNameList_{fileNameList}
-        {
-            initialize();
         }
 
         std::string Configuration::find(const std::string &key) const
@@ -95,7 +100,7 @@ namespace Eihire
                 // 見つからなかった場合に強制的にout_of_range例外を送出
                 return propertiesMapList_.at(propertiesMapList_.size()).properties().at(key);
             }
-            
+
             for (const PropertiesMap &p : propertiesMapList_)
             {
                 if (p.isContain(key))
