@@ -3,8 +3,12 @@
 
 #include "gtest/gtest.h"
 
+#include <string>
+
 using namespace Eihire::Configuration;
 using namespace Eihire::Exception;
+
+const std::string TEST_DATA_DIR = "../../../test/testdata/";
 
 // プロパティファイル名が設定していない状態でのロード処理
 TEST(PropertiesMapTest, PropertiesMap_load_001)
@@ -27,7 +31,7 @@ TEST(PropertiesMapTest, PropertiesMap_load_001)
 // ロード処理
 TEST(PropertiesMapTest, PropertiesMap_load_002)
 {
-    PropertiesMap p("Eihire.properties");
+    PropertiesMap p(TEST_DATA_DIR + "Eihire.properties");
     p.load();
     SUCCEED();
 }
@@ -35,7 +39,7 @@ TEST(PropertiesMapTest, PropertiesMap_load_002)
 // 値取得
 TEST(PropertiesMapTest, PropertiesMap_get_001)
 {
-    PropertiesMap p("Eihire.properties");
+    PropertiesMap p(TEST_DATA_DIR + "Eihire.properties");
     p.load();
     ASSERT_STREQ("あいうえお", p.get("1").c_str());
     ASSERT_STREQ("XYZ_@", p.get("2").c_str());
@@ -46,7 +50,7 @@ TEST(PropertiesMapTest, PropertiesMap_get_001)
 // 存在しないキーで値取得
 TEST(PropertiesMapTest, PropertiesMap_get_002)
 {
-    PropertiesMap p("Eihire.properties");
+    PropertiesMap p(TEST_DATA_DIR + "Eihire.properties");
     p.load();
     try
     {
