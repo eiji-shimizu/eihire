@@ -3,110 +3,107 @@
 
 #include <fstream>
 #include <sstream>
-namespace Eihire
+namespace Eihire::Configuration
 {
-    namespace Configuration
+
+    PropertiesMap::PropertiesMap() = default;
+    PropertiesMap::~PropertiesMap() = default;
+    PropertiesMap::PropertiesMap(const PropertiesMap &) = default;
+    PropertiesMap &PropertiesMap::operator=(const PropertiesMap &) = default;
+    PropertiesMap::PropertiesMap(PropertiesMap &&) = default;
+    PropertiesMap &PropertiesMap::operator=(PropertiesMap &&) = default;
+
+    PropertiesMap::PropertiesMap(std::string fileName)
+        : fileName_{fileName}
     {
+        // noop
+    }
 
-        PropertiesMap::PropertiesMap() = default;
-        PropertiesMap::~PropertiesMap() = default;
-        PropertiesMap::PropertiesMap(const PropertiesMap &) = default;
-        PropertiesMap &PropertiesMap::operator=(const PropertiesMap &) = default;
-        PropertiesMap::PropertiesMap(PropertiesMap &&) = default;
-        PropertiesMap &PropertiesMap::operator=(PropertiesMap &&) = default;
-
-        PropertiesMap::PropertiesMap(std::string fileName)
-            : fileName_{fileName}
+    void PropertiesMap::load()
+    {
+        std::ifstream ifs((fileName_));
+        if (!ifs)
         {
-            // noop
+            std::ostringstream oss("");
+            oss << "can't open file '" << fileName_ << "'.";
+            throw Exception::FileCannotOpenException(oss.str());
         }
-
-        void PropertiesMap::load()
+        // ファイル読み込み開始
+        // この文以降でifsがbad状態になった場合に例外をスローさせる
+        ifs.exceptions(ifs.exceptions() | std::ios_base::badbit);
+        std::string line;
+        while (ifs)
         {
-            std::ifstream ifs((fileName_));
-            if (!ifs)
+            std::getline(ifs, line);
+            if (line.length() <= 0)
             {
-                std::ostringstream oss("");
-                oss << "can't open file '" << fileName_ << "'.";
-                throw Exception::FileCannotOpenException(oss.str());
+                continue;
             }
-            // ファイル読み込み開始
-            // この文以降でifsがbad状態になった場合に例外をスローさせる
-            ifs.exceptions(ifs.exceptions() | std::ios_base::badbit);
-            std::string line;
-            while (ifs)
+            std::ostringstream key("");
+            std::ostringstream value("");
+            bool isComment = false;
+            bool flg = false;
+            for (const char c : line)
             {
-                std::getline(ifs, line);
-                if (line.length() <= 0)
+                if (c == '#' || c == '!')
                 {
+                    isComment = true;
+                    break;
+                }
+                if (flg == false && c == '=')
+                {
+                    flg = true;
                     continue;
                 }
-                std::ostringstream key("");
-                std::ostringstream value("");
-                bool isComment = false;
-                bool flg = false;
-                for (const char c : line)
-                {
-                    if (c == '#' || c == '!')
-                    {
-                        isComment = true;
-                        break;
-                    }
-                    if (flg == false && c == '=')
-                    {
-                        flg = true;
-                        continue;
-                    }
-                    if (flg)
-                        value << c;
-                    else
-                        key << c;
-                }
-
-                if (!isComment)
-                {
-                    // コメント行でないのに'='が見つからなかった場合は構文エラー
-                    if (!flg)
-                    {
-                        std::ostringstream oss("");
-                        oss << "parse error file'" << fileName_ << "'.";
-                        throw Exception::ParseException(oss.str());
-                    }
-                    set(key.str(), value.str());
-                }
+                if (flg)
+                    value << c;
+                else
+                    key << c;
             }
-        }
 
-        bool PropertiesMap::isContain(const std::string &key) const
-        {
-            auto it = properties_.find(key);
-            return it != properties_.end();
-        }
-
-        std::string PropertiesMap::get(const std::string &key) const
-        {
-            return properties_.at(key);
-        }
-
-        void PropertiesMap::set(const std::string &key, const std::string &value)
-        {
-            std::pair<std::string, std::string> e{key, value};
-            auto result = properties_.insert(std::make_pair(key, value));
-            if (!result.second)
+            if (!isComment)
             {
-                properties_.at(key) = value;
+                // コメント行でないのに'='が見つからなかった場合は構文エラー
+                if (!flg)
+                {
+                    std::ostringstream oss("");
+                    oss << "parse error file'" << fileName_ << "'.";
+                    throw Exception::ParseException(oss.str());
+                }
+                set(key.str(), value.str());
             }
         }
+    }
 
-        const std::string &PropertiesMap::fileName() const
+    bool PropertiesMap::isContain(const std::string &key) const
+    {
+        auto it = properties_.find(key);
+        return it != properties_.end();
+    }
+
+    std::string PropertiesMap::get(const std::string &key) const
+    {
+        return properties_.at(key);
+    }
+
+    void PropertiesMap::set(const std::string &key, const std::string &value)
+    {
+        std::pair<std::string, std::string> e{key, value};
+        auto result = properties_.insert(std::make_pair(key, value));
+        if (!result.second)
         {
-            return fileName_;
+            properties_.at(key) = value;
         }
+    }
 
-        const std::map<std::string, std::string> &PropertiesMap::properties() const
-        {
-            return properties_;
-        }
+    const std::string &PropertiesMap::fileName() const
+    {
+        return fileName_;
+    }
 
-    } // namespace Configuration
-} // namespace Eihire
+    const std::map<std::string, std::string> &PropertiesMap::properties() const
+    {
+        return properties_;
+    }
+
+} // namespace Eihire::Configuration

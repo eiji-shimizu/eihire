@@ -3,23 +3,20 @@
 
 #include <stdexcept>
 
-namespace Eihire
+namespace Eihire::Exception
 {
-    namespace Exception
+    class FileCannotOpenException : public std::runtime_error
     {
-        class FileCannotOpenException : public std::runtime_error
-        {
-        public:
-            FileCannotOpenException(const std::string &msg);
-        };
+    public:
+        FileCannotOpenException(const std::string &msg);
+    };
 
-        class ParseException : public std::runtime_error
-        {
-        public:
-            ParseException(const std::string &msg);
-        };
+    class ParseException : public std::runtime_error
+    {
+    public:
+        ParseException(const std::string &msg);
+    };
 
-    } // namespace Exception
-} // namespace Eihire
+} // namespace Eihire::Exception
 
 #endif // EIHIRE_EXCEPTION_Exception_INCLUDED

@@ -1,18 +1,15 @@
 #include "Exception.h"
 
-namespace Eihire
+namespace Eihire::Exception
 {
-    namespace Exception
+    FileCannotOpenException::FileCannotOpenException(const std::string &msg)
+        : std::runtime_error(msg)
     {
-        FileCannotOpenException::FileCannotOpenException(const std::string &msg)
-            : std::runtime_error(msg)
-        {
-        }
+    }
 
-        ParseException::ParseException(const std::string &msg)
-            : std::runtime_error(msg)
-        {
-        }
+    ParseException::ParseException(const std::string &msg)
+        : std::runtime_error(msg)
+    {
+    }
 
-    } // namespace Exception
-} // namespace Eihire
+} // namespace Eihire::Exception

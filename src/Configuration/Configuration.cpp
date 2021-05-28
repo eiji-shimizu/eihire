@@ -3,90 +3,90 @@
 
 #include <iostream>
 
-namespace Eihire
+namespace Eihire::Configuration
 {
-    namespace Configuration
+    namespace
     {
-        namespace
+        void initializeImpl(std::vector<PropertiesMap> &propertiesMapList, const std::vector<std::string> &fileNameList)
         {
-            void initializeImpl(std::vector<PropertiesMap> &propertiesMapList, const std::vector<std::string> &fileNameList)
+            for (const auto &fileName : fileNameList)
             {
-                for (const auto &fileName : fileNameList)
-                {
-                    PropertiesMap p{fileName};
-                    propertiesMapList.push_back(p);
-                }
-                for (PropertiesMap &p : propertiesMapList)
-                {
-                    p.load();
-                }
+                PropertiesMap p{fileName};
+                propertiesMapList.push_back(p);
             }
-
-        } // namespace
-
-        Configuration &Configuration::getConfiguration()
-        {
-            return getConfiguration("Eihire.properties");
-        }
-
-        Configuration &Configuration::getConfiguration(const std::string &fileName)
-        {
-            std::vector<std::string> vec{fileName};
-            return getConfiguration(vec);
-        }
-
-        Configuration &Configuration::getConfiguration(const std::vector<std::string> &fileNameList)
-        {
-            static Configuration *instance = new Configuration(fileNameList);
-            return *instance;
-        }
-
-        Configuration::Configuration(const std::vector<std::string> &fileNameList)
-            : fileNameList_{fileNameList}
-        {
-            initialize();
-        }
-
-        Configuration::~Configuration()
-        {
-            // noop
-        }
-
-        std::string Configuration::find(const std::string &key) const
-        {
-            return find("", key);
-        }
-
-        std::string Configuration::find(const std::string &fileName, const std::string &key) const
-        {
-            for (const PropertiesMap &p : propertiesMapList_)
+            for (PropertiesMap &p : propertiesMapList)
             {
-                if (fileName != "")
-                {
-                    if (p.fileName() == fileName)
-                    {
-                        if (p.isContain(key))
-                            return p.get(key);
-                        return "";
-                    }
-                    else
-                        continue;
-                }
+                p.load();
+            }
+        }
 
-                if (p.isContain(key))
-                    return p.get(key);
+    } // namespace
+
+    Configuration &Configuration::getConfiguration()
+    {
+        return getConfiguration("Eihire.properties");
+    }
+
+    Configuration &Configuration::getConfiguration(const std::string &fileName)
+    {
+        std::vector<std::string> vec{fileName};
+        return getConfiguration(vec);
+    }
+
+    Configuration &Configuration::getConfiguration(const std::vector<std::string> &fileNameList)
+    {
+        static Configuration *instance = new Configuration(fileNameList);
+        return *instance;
+    }
+
+    Configuration::Configuration(const std::vector<std::string> &fileNameList)
+        : fileNameList_{fileNameList}
+    {
+        initialize();
+    }
+
+    Configuration::~Configuration()
+    {
+        // noop
+    }
+
+    std::string Configuration::find(const std::string &key) const
+    {
+        return find("", key);
+    }
+
+    std::string Configuration::find(const std::string &fileName, const std::string &key) const
+    {
+        for (const PropertiesMap &p : propertiesMapList_)
+        {
+            if (fileName != "")
+            {
+                if (p.fileName() == fileName)
+                {
+                    if (p.isContain(key))
+                        return p.get(key);
+                    return "";
+                }
                 else
                     continue;
             }
-            return "";
-        }
 
-        std::string Configuration::get(const std::string &key) const
-        {
-            return get("", key);
+            if (p.isContain(key))
+                return p.get(key);
+            else
+                continue;
         }
+        return "";
+    }
 
-        std::string Configuration::get(const std::string &fileName, const std::string &key) const
+    std::string Configuration::get(const std::string &key) const
+    {
+        return get("", key);
+    }
+
+    std::string Configuration::get(const std::string &fileName, const std::string &key) const
+    {
+        if (fileName != "")
         {
             if (fileName != "")
             {
@@ -103,24 +103,34 @@ namespace Eihire
 
             for (const PropertiesMap &p : propertiesMapList_)
             {
-                if (p.isContain(key))
+                if (p.fileName() == fileName)
                     return p.get(key);
                 else
                     continue;
             }
             // 見つからなかった場合に強制的にout_of_range例外を送出
-            return propertiesMapList_.at(0).properties().at(key);
+            return propertiesMapList_.at(propertiesMapList_.size()).properties().at(key);
         }
 
-        const std::vector<PropertiesMap> &Configuration::propertiesMapList() const
+        for (const PropertiesMap &p : propertiesMapList_)
         {
-            return propertiesMapList_;
+            if (p.isContain(key))
+                return p.get(key);
+            else
+                continue;
         }
+        // 見つからなかった場合に強制的にout_of_range例外を送出
+        return propertiesMapList_.at(0).properties().at(key);
+    }
 
-        void Configuration::initialize()
-        {
-            initializeImpl(propertiesMapList_, fileNameList_);
-        }
+    const std::vector<PropertiesMap> &Configuration::propertiesMapList() const
+    {
+        return propertiesMapList_;
+    }
 
-    } // Configuration
-} // Eihire
+    void Configuration::initialize()
+    {
+        initializeImpl(propertiesMapList_, fileNameList_);
+    }
+
+} // namespace Eihire::Configuration
