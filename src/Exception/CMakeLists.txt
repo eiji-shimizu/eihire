@@ -3,4 +3,4 @@ add_library(ExceptionMod STATIC
             Exception.cpp)
 
 target_include_directories(ExceptionMod
-                            PRIVATE ${EIHIRE_INCLUDE_EXCEPTION_DIRS})
+                            PRIVATE ${EIHIRE_INCLUDE_DIRS})
