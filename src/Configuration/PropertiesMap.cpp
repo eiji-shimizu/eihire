@@ -1,5 +1,5 @@
-#include "PropertiesMap.h"
-#include "Exception.h"
+#include "Configuration/PropertiesMap.h"
+#include "Exception/Exception.h"
 
 #include <fstream>
 #include <sstream>

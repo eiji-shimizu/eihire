@@ -31,10 +31,7 @@ target_link_libraries(EihireTest
 
 target_include_directories(EihireTest
                             PRIVATE ${GOOGLETEST_INCLUDE_DIRS}
-                            PRIVATE ${EIHIRE_INCLUDE_CONFIGURATION_DIRS}
-                            PRIVATE ${EIHIRE_INCLUDE_EXCEPTION_DIRS}
                             PRIVATE ${EIHIRE_INCLUDE_DIRS})
-
 
 add_test(NAME EihireTest COMMAND EihireTest)
 
