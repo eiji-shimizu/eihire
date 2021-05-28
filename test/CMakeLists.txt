@@ -1,5 +1,7 @@
 # EihireTest
 
+set(EIHIRE_TEST_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/test/TestUtils)
+
 # Google Testのライブラリを追加
 set(GOOGLETEST_INCLUDE_DIRS C:/googletest/include)
 set(GOOGLETEST_LIBRARY_DIRS C:/googletest/lib)
@@ -21,6 +23,7 @@ link_directories(GOOGLETEST_LIBRARY_DIRS)
 
 add_executable(EihireTest Configuration/ConfigurationTest.cpp
                             Configuration/PropertiesMapTest.cpp
+                            TestUtils/TestUtils.cpp
                             )
 
 target_link_libraries(EihireTest
@@ -31,6 +34,7 @@ target_link_libraries(EihireTest
 
 target_include_directories(EihireTest
                             PRIVATE ${GOOGLETEST_INCLUDE_DIRS}
+                            PRIVATE ${EIHIRE_TEST_INCLUDE_DIRS}
                             PRIVATE ${EIHIRE_INCLUDE_DIRS})
 
 add_test(NAME EihireTest COMMAND EihireTest)

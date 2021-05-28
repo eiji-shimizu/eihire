@@ -1,16 +1,18 @@
 #include "Configuration/Configuration.h"
+#include "TestUtils.h"
 
 #include "gtest/gtest.h"
 
 using namespace Eihire::Configuration;
-
-const std::string TEST_DATA_DIR = "../../../test/testdata/";
+using namespace Eihire::TestUtils;
 
 // シングルトンのオブジェクト取得
 TEST(ConfigurationTest, Configuration_getConfiguration_001)
 {
-    Configuration &config1 = Configuration::getConfiguration(TEST_DATA_DIR + "Eihire.properties");
-    Configuration &config2 = Configuration::getConfiguration(TEST_DATA_DIR + "Eihire.properties");
+    std::filesystem::path p = getTestDataPath();
+    p.append("Eihire.properties");
+    Configuration &config1 = Configuration::getConfiguration(p.generic_string());
+    Configuration &config2 = Configuration::getConfiguration(p.generic_string());
     if (&config1 == &config2)
     {
         SUCCEED();
@@ -24,7 +26,9 @@ TEST(ConfigurationTest, Configuration_getConfiguration_001)
 // 値取得
 TEST(ConfigurationTest, Configuration_get_001)
 {
-    Configuration &config = Configuration::getConfiguration(TEST_DATA_DIR + "Eihire.properties");
+    std::filesystem::path p = getTestDataPath();
+    p.append("Eihire.properties");
+    Configuration &config = Configuration::getConfiguration(p.generic_string());
     ASSERT_STREQ("あいうえお", config.get("1").c_str());
     ASSERT_STREQ("XYZ_@", config.get("2").c_str());
     ASSERT_STREQ("c++ programming", config.get("abcd").c_str());
@@ -34,7 +38,9 @@ TEST(ConfigurationTest, Configuration_get_001)
 // 存在しないキーで値取得でout_of_range例外を投げる
 TEST(ConfigurationTest, Configuration_get_002)
 {
-    Configuration &config = Configuration::getConfiguration(TEST_DATA_DIR + "Eihire.properties");
+    std::filesystem::path p = getTestDataPath();
+    p.append("Eihire.properties");
+    Configuration &config = Configuration::getConfiguration(p.generic_string());
     try
     {
         config.get("002");
