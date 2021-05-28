@@ -12,8 +12,8 @@ namespace Eihire::Configuration
     public:
         // シングルトンのConfigurationオブジェクトを返す
         static Configuration &getConfiguration();
-        static Configuration &getConfiguration(const std::string &fileName);
-        static Configuration &getConfiguration(const std::vector<std::string> &fileNameList);
+        static Configuration &getConfiguration(const std::string &filePath);
+        static Configuration &getConfiguration(const std::vector<std::string> &filePathList);
 
         ~Configuration();
 
@@ -38,14 +38,18 @@ namespace Eihire::Configuration
         // 無い場合は例外を投げる
         std::string get(const std::string &fileName, const std::string &key) const;
 
+        // プロパティファイルを追加する
+        void addPropertiesFile(const std::string &filePath);
+        void addPropertiesFile(const std::vector<std::string> &filePathList);
+
         const std::vector<PropertiesMap> &propertiesMapList() const;
 
     private:
-        Configuration(const std::vector<std::string> &fileNameList);
+        Configuration(const std::vector<std::string> &filePathList);
         void initialize();
 
         std::vector<PropertiesMap> propertiesMapList_;
-        std::vector<std::string> fileNameList_;
+        std::vector<std::string> filePathList_;
     };
 
 } // namespace Eihire::Configuration

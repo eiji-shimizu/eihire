@@ -11,7 +11,7 @@ namespace Eihire::Configuration
     public:
         PropertiesMap();
         ~PropertiesMap();
-        PropertiesMap(std::string fileName);
+        PropertiesMap(std::string filePath);
 
         // コピー演算
         PropertiesMap(const PropertiesMap &);
@@ -28,6 +28,7 @@ namespace Eihire::Configuration
         const std::map<std::string, std::string> &properties() const;
 
     private:
+        std::string filePath_;
         std::string fileName_;
         std::map<std::string, std::string> properties_;
     };

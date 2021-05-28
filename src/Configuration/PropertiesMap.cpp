@@ -3,8 +3,19 @@
 
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 namespace Eihire::Configuration
 {
+
+    namespace
+    {
+        std::string getFileName(const std::string &filePath)
+        {
+            std::filesystem::path p{filePath};
+            return p.filename().generic_string();
+        }
+
+    } // namespace
 
     PropertiesMap::PropertiesMap() = default;
     PropertiesMap::~PropertiesMap() = default;
@@ -13,19 +24,20 @@ namespace Eihire::Configuration
     PropertiesMap::PropertiesMap(PropertiesMap &&) = default;
     PropertiesMap &PropertiesMap::operator=(PropertiesMap &&) = default;
 
-    PropertiesMap::PropertiesMap(std::string fileName)
-        : fileName_{fileName}
+    PropertiesMap::PropertiesMap(std::string filePath)
+        : filePath_{filePath},
+          fileName_{getFileName(filePath)}
     {
         // noop
     }
 
     void PropertiesMap::load()
     {
-        std::ifstream ifs((fileName_));
+        std::ifstream ifs((filePath_));
         if (!ifs)
         {
             std::ostringstream oss("");
-            oss << "can't open file '" << fileName_ << "'.";
+            oss << "can't open file '" << filePath_ << "'.";
             throw Exception::FileCannotOpenException(oss.str());
         }
         // ファイル読み込み開始
@@ -67,7 +79,7 @@ namespace Eihire::Configuration
                 if (!flg)
                 {
                     std::ostringstream oss("");
-                    oss << "parse error file'" << fileName_ << "'.";
+                    oss << "parse error file'" << filePath_ << "'.";
                     throw Exception::ParseException(oss.str());
                 }
                 set(key.str(), value.str());

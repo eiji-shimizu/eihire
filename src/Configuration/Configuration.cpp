@@ -7,11 +7,11 @@ namespace Eihire::Configuration
 {
     namespace
     {
-        void initializeImpl(std::vector<PropertiesMap> &propertiesMapList, const std::vector<std::string> &fileNameList)
+        void initializeImpl(std::vector<PropertiesMap> &propertiesMapList, const std::vector<std::string> &filePathList)
         {
-            for (const auto &fileName : fileNameList)
+            for (const auto &filePath : filePathList)
             {
-                PropertiesMap p{fileName};
+                PropertiesMap p{filePath};
                 propertiesMapList.push_back(p);
             }
             for (PropertiesMap &p : propertiesMapList)
@@ -24,23 +24,24 @@ namespace Eihire::Configuration
 
     Configuration &Configuration::getConfiguration()
     {
-        return getConfiguration("Eihire.properties");
-    }
-
-    Configuration &Configuration::getConfiguration(const std::string &fileName)
-    {
-        std::vector<std::string> vec{fileName};
+        std::vector<std::string> vec;
         return getConfiguration(vec);
     }
 
-    Configuration &Configuration::getConfiguration(const std::vector<std::string> &fileNameList)
+    Configuration &Configuration::getConfiguration(const std::string &filePath)
     {
-        static Configuration *instance = new Configuration(fileNameList);
+        std::vector<std::string> vec{filePath};
+        return getConfiguration(vec);
+    }
+
+    Configuration &Configuration::getConfiguration(const std::vector<std::string> &filePathList)
+    {
+        static Configuration *instance = new Configuration(filePathList);
         return *instance;
     }
 
-    Configuration::Configuration(const std::vector<std::string> &fileNameList)
-        : fileNameList_{fileNameList}
+    Configuration::Configuration(const std::vector<std::string> &filePathList)
+        : filePathList_{filePathList}
     {
         initialize();
     }
@@ -88,19 +89,6 @@ namespace Eihire::Configuration
     {
         if (fileName != "")
         {
-            if (fileName != "")
-            {
-                for (const PropertiesMap &p : propertiesMapList_)
-                {
-                    if (p.fileName() == fileName)
-                        return p.get(key);
-                    else
-                        continue;
-                }
-                // 見つからなかった場合に強制的にout_of_range例外を送出
-                return propertiesMapList_.at(propertiesMapList_.size()).properties().at(key);
-            }
-
             for (const PropertiesMap &p : propertiesMapList_)
             {
                 if (p.fileName() == fileName)
@@ -123,6 +111,26 @@ namespace Eihire::Configuration
         return propertiesMapList_.at(0).properties().at(key);
     }
 
+    void Configuration::addPropertiesFile(const std::string &filePath)
+    {
+        std::vector<std::string> vec{filePath};
+        addPropertiesFile(vec);
+    }
+
+    void Configuration::addPropertiesFile(const std::vector<std::string> &filePathList)
+    {
+        std::vector<PropertiesMap> additionalList;
+        initializeImpl(additionalList, filePathList);
+        for (const auto &p : additionalList)
+        {
+            propertiesMapList_.push_back(p);
+        }
+        for (const auto &s : filePathList)
+        {
+            filePathList_.push_back(s);
+        }
+    }
+
     const std::vector<PropertiesMap> &Configuration::propertiesMapList() const
     {
         return propertiesMapList_;
@@ -130,7 +138,7 @@ namespace Eihire::Configuration
 
     void Configuration::initialize()
     {
-        initializeImpl(propertiesMapList_, fileNameList_);
+        initializeImpl(propertiesMapList_, filePathList_);
     }
 
 } // namespace Eihire::Configuration
