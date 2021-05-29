@@ -4,6 +4,13 @@
 #include <string>
 #include <fstream>
 
+#define E_FATAL(MESSAGE) fatal(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
+#define E_ERROR(MESSAGE) error(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
+#define E_WARN(MESSAGE) warn(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
+#define E_INFO(MESSAGE) info(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
+#define E_DEBUG(MESSAGE) debug(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
+#define E_TRACE(MESSAGE) trace(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
+
 namespace Eihire::Logging
 {
     class Logger
@@ -39,18 +46,18 @@ namespace Eihire::Logging
 
         void setLevel(Level level);
 
-        void fatal(const std::string &message);
-        void error(const std::string &message);
-        void warn(const std::string &message);
-        void info(const std::string &message);
-        void debug(const std::string &message);
-        void trace(const std::string &message);
+        void fatal(const char *fileName, const char *functionName, uint64_t line, const std::string &message);
+        void error(const char *fileName, const char *functionName, uint64_t line, const std::string &message);
+        void warn(const char *fileName, const char *functionName, uint64_t line, const std::string &message);
+        void info(const char *fileName, const char *functionName, uint64_t line, const std::string &message);
+        void debug(const char *fileName, const char *functionName, uint64_t line, const std::string &message);
+        void trace(const char *fileName, const char *functionName, uint64_t line, const std::string &message);
 
         // ログの設定ファイル名(elog.propertiesで固定)
         static const std::string PROPERTIES_FILE_NAME;
 
     private:
-        void write(const std::string &level, const std::string &message);
+        void write(const std::string &level, const char *fileName, const char *functionName, uint64_t line, const std::string &message);
 
         Level level_;
         Channel channel_;

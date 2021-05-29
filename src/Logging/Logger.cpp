@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 
 using namespace Eihire::Configuration;
 
@@ -107,41 +108,49 @@ namespace Eihire::Logging
         level_ = level;
     }
 
-    void Logger::fatal(const std::string &message)
+    void Logger::fatal(const char *fileName, const char *functionName, uint64_t line, const std::string &message)
     {
         if (level_ <= Level::FATAL)
-            write("FATAL", message);
+            write("FATAL", fileName, functionName, line, message);
     }
-    void Logger::error(const std::string &message)
+    void Logger::error(const char *fileName, const char *functionName, uint64_t line, const std::string &message)
     {
         if (level_ <= Level::ERROR)
-            write("ERROR", message);
+            write("ERROR", fileName, functionName, line, message);
     }
-    void Logger::warn(const std::string &message)
+    void Logger::warn(const char *fileName, const char *functionName, uint64_t line, const std::string &message)
     {
         if (level_ <= Level::WARN)
-            write("WARN", message);
+            write("WARN", fileName, functionName, line, message);
     }
-    void Logger::info(const std::string &message)
+    void Logger::info(const char *fileName, const char *functionName, uint64_t line, const std::string &message)
     {
         if (level_ <= Level::INFO)
-            write("INFO", message);
+            write("INFO", fileName, functionName, line, message);
     }
-    void Logger::debug(const std::string &message)
+    void Logger::debug(const char *fileName, const char *functionName, uint64_t line, const std::string &message)
     {
         if (level_ <= Level::DEBUG)
-            write("DEBUG", message);
+            write("DEBUG", fileName, functionName, line, message);
     }
-    void Logger::trace(const std::string &message)
+    void Logger::trace(const char *fileName, const char *functionName, uint64_t line, const std::string &message)
     {
         if (level_ <= Level::TRACE)
-            write("TRACE", message);
+            write("TRACE", fileName, functionName, line, message);
     }
 
-    void Logger::write(const std::string &level, const std::string &message)
+    void Logger::write(const std::string &level, const char *fileName, const char *functionName, uint64_t line, const std::string &message)
     {
+        std::filesystem::path p{fileName};
+        std::string fLevel = level;
+        while (fLevel.length() < 5)
+        {
+            fLevel.append(" ");
+        }
         std::ostringstream oss("");
-        oss << "[" << level << "]:" << message << std::endl;
+        oss << fLevel << " ";
+        oss << "file: " << p.filename().generic_string() << " " << functionName << " line: " << line << " ";
+        oss << message << std::endl;
 
         // 出力先に応じて参照先を格納するポインタ
         std::ostream *pos = nullptr;
