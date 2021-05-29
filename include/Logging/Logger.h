@@ -36,6 +36,8 @@ namespace Eihire::Logging
         Logger(Logger &&) = delete;
         Logger &operator=(Logger &&) = delete;
 
+        void setLevel(Level level);
+
         void fatal(const std::string &message);
         void error(const std::string &message);
         void warn(const std::string &message);
@@ -44,6 +46,8 @@ namespace Eihire::Logging
         void trace(const std::string &message);
 
     private:
+        void write(const std::string &level, const std::string &message);
+
         Level level_;
         Channel channel_;
         std::string name_;

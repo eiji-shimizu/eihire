@@ -30,10 +30,65 @@ protected:
     }
 };
 
-//
-TEST_F(LoggerTest, Logger_info_001)
+TEST_F(LoggerTest, Logger_channel_001)
 {
-    Logger logger(Logger::Level::INFO, Logger::Channel::FILE, "testlog");
-    logger.info("test abcdefghijklmnopqrstuvwxyz");
-    SUCCEED();
+    Logger logger(Logger::Level::DEBUG, Logger::Channel::CONSOLE, "testlog");
+    logger.info("Logger_level_001:test message");
+}
+
+TEST_F(LoggerTest, Logger_channel_002)
+{
+    Logger logger(Logger::Level::DEBUG, Logger::Channel::FILE, "testlog");
+    logger.info("Logger_channel_002:test message");
+}
+
+TEST_F(LoggerTest, Logger_level_001)
+{
+    Logger logger(Logger::Level::TRACE, Logger::Channel::FILE, "testlog");
+    logger.trace("Logger_level_001:TRACE Level");
+    logger.debug("Logger_level_001:TRACE Level");
+    logger.info("Logger_level_001:TRACE Level");
+    logger.warn("Logger_level_001:TRACE Level");
+    logger.error("Logger_level_001:TRACE Level");
+    logger.fatal("Logger_level_001:TRACE Level");
+
+    logger.setLevel(Logger::Level::DEBUG);
+    logger.trace("Logger_level_001:DEBUG Level");
+    logger.debug("Logger_level_001:DEBUG Level");
+    logger.info("Logger_level_001:DEBUG Level");
+    logger.warn("Logger_level_001:DEBUG Level");
+    logger.error("Logger_level_001:DEBUG Level");
+    logger.fatal("Logger_level_001:DEBUG Level");
+
+    logger.setLevel(Logger::Level::INFO);
+    logger.trace("Logger_level_001:INFO Level");
+    logger.debug("Logger_level_001:INFO Level");
+    logger.info("Logger_level_001:INFO Level");
+    logger.warn("Logger_level_001:INFO Level");
+    logger.error("Logger_level_001:INFO Level");
+    logger.fatal("Logger_level_001:INFO Level");
+
+    logger.setLevel(Logger::Level::WARN);
+    logger.trace("Logger_level_001:WARN Level");
+    logger.debug("Logger_level_001:WARN Level");
+    logger.info("Logger_level_001:WARN Level");
+    logger.warn("Logger_level_001:WARN Level");
+    logger.error("Logger_level_001:WARN Level");
+    logger.fatal("Logger_level_001:WARN Level");
+
+    logger.setLevel(Logger::Level::ERROR);
+    logger.trace("Logger_level_001:ERROR Level");
+    logger.debug("Logger_level_001:ERROR Level");
+    logger.info("Logger_level_001:ERROR Level");
+    logger.warn("Logger_level_001:ERROR Level");
+    logger.error("Logger_level_001:ERROR Level");
+    logger.fatal("Logger_level_001:ERROR Level");
+
+    logger.setLevel(Logger::Level::FATAL);
+    logger.trace("Logger_level_001:FATAL Level");
+    logger.debug("Logger_level_001:FATAL Level");
+    logger.info("Logger_level_001:FATAL Level");
+    logger.warn("Logger_level_001:FATAL Level");
+    logger.error("Logger_level_001:FATAL Level");
+    logger.fatal("Logger_level_001:FATAL Level");
 }

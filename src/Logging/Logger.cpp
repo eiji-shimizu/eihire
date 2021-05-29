@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 namespace Eihire::Logging
 {
@@ -37,24 +38,55 @@ namespace Eihire::Logging
         }
     }
 
+    void Logger::setLevel(Level level)
+    {
+        level_ = level;
+    }
+
     void Logger::fatal(const std::string &message)
     {
+        if (level_ <= Level::FATAL)
+            write("FATAL", message);
     }
     void Logger::error(const std::string &message)
     {
+        if (level_ <= Level::ERROR)
+            write("ERROR", message);
     }
     void Logger::warn(const std::string &message)
     {
+        if (level_ <= Level::WARN)
+            write("WARN", message);
     }
     void Logger::info(const std::string &message)
     {
-        ofs_ << message << std::endl;
+        if (level_ <= Level::INFO)
+            write("INFO", message);
     }
     void Logger::debug(const std::string &message)
     {
+        if (level_ <= Level::DEBUG)
+            write("DEBUG", message);
     }
     void Logger::trace(const std::string &message)
     {
+        if (level_ <= Level::TRACE)
+            write("TRACE", message);
+    }
+
+    void Logger::write(const std::string &level, const std::string &message)
+    {
+        std::ostringstream oss("");
+        oss << "[" << level << "]:" << message << std::endl;
+
+        // 出力先に応じて参照先を格納するポインタ
+        std::ostream *pos = nullptr;
+        if (channel_ == Channel::CONSOLE)
+            pos = &std::cout;
+        else if (channel_ == Channel::FILE)
+            pos = &ofs_;
+
+        *pos << oss.str();
     }
 
 } // namespace Eihire::Logging
