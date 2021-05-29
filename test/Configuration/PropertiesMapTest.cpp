@@ -45,10 +45,10 @@ TEST(PropertiesMapTest, PropertiesMap_get_001)
     pt.append("Eihire.properties");
     PropertiesMap p(pt.generic_string());
     p.load();
-    ASSERT_STREQ("あいうえお", p.get("1").c_str());
-    ASSERT_STREQ("XYZ_@", p.get("2").c_str());
+    ASSERT_STREQ("あいうえお", p.get("eihire1").c_str());
+    ASSERT_STREQ("XYZ_@", p.get("eihire2").c_str());
     ASSERT_STREQ("c++ programming", p.get("abcd").c_str());
-    ASSERT_STREQ("abcdefghijklmnopqrstuvwxyz", p.get("004").c_str());
+    ASSERT_STREQ("abcdefghijklmnopqrstuvwxyz", p.get("eihire004").c_str());
 }
 
 // 存在しないキーで値取得

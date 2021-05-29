@@ -7,7 +7,7 @@ namespace Eihire::Configuration
 {
     namespace
     {
-        void initializeImpl(std::vector<PropertiesMap> &propertiesMapList, const std::vector<std::string> &filePathList)
+        void addAndLoad(std::vector<PropertiesMap> &propertiesMapList, const std::vector<std::string> &filePathList)
         {
             for (const auto &filePath : filePathList)
             {
@@ -24,8 +24,8 @@ namespace Eihire::Configuration
 
     Configuration &Configuration::getConfiguration()
     {
-        std::vector<std::string> vec;
-        return getConfiguration(vec);
+        static Configuration *instance = new Configuration();
+        return *instance;
     }
 
     Configuration &Configuration::getConfiguration(const std::string &filePath)
@@ -36,20 +36,14 @@ namespace Eihire::Configuration
 
     Configuration &Configuration::getConfiguration(const std::vector<std::string> &filePathList)
     {
-        static Configuration *instance = new Configuration(filePathList);
-        return *instance;
+        Configuration &config = getConfiguration();
+        config.addPropertiesFile(filePathList);
+        return config;
     }
 
-    Configuration::Configuration(const std::vector<std::string> &filePathList)
-        : filePathList_{filePathList}
-    {
-        initialize();
-    }
+    Configuration::Configuration() = default;
 
-    Configuration::~Configuration()
-    {
-        // noop
-    }
+    Configuration::~Configuration() = default;
 
     std::string Configuration::find(const std::string &key) const
     {
@@ -120,7 +114,7 @@ namespace Eihire::Configuration
     void Configuration::addPropertiesFile(const std::vector<std::string> &filePathList)
     {
         std::vector<PropertiesMap> additionalList;
-        initializeImpl(additionalList, filePathList);
+        addAndLoad(additionalList, filePathList);
         for (const auto &p : additionalList)
         {
             propertiesMapList_.push_back(p);
@@ -134,11 +128,6 @@ namespace Eihire::Configuration
     const std::vector<PropertiesMap> &Configuration::propertiesMapList() const
     {
         return propertiesMapList_;
-    }
-
-    void Configuration::initialize()
-    {
-        initializeImpl(propertiesMapList_, filePathList_);
     }
 
 } // namespace Eihire::Configuration

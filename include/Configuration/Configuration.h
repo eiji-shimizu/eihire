@@ -45,8 +45,7 @@ namespace Eihire::Configuration
         const std::vector<PropertiesMap> &propertiesMapList() const;
 
     private:
-        Configuration(const std::vector<std::string> &filePathList);
-        void initialize();
+        Configuration();
 
         std::vector<PropertiesMap> propertiesMapList_;
         std::vector<std::string> filePathList_;

@@ -52,10 +52,10 @@ TEST_F(ConfigurationTest, Configuration_getConfiguration_001)
 TEST_F(ConfigurationTest, Configuration_get_001)
 {
     Configuration &config = Configuration::getConfiguration();
-    ASSERT_STREQ("あいうえお", config.get("1").c_str());
-    ASSERT_STREQ("XYZ_@", config.get("2").c_str());
+    ASSERT_STREQ("あいうえお", config.get("eihire1").c_str());
+    ASSERT_STREQ("XYZ_@", config.get("eihire2").c_str());
     ASSERT_STREQ("c++ programming", config.get("abcd").c_str());
-    ASSERT_STREQ("abcdefghijklmnopqrstuvwxyz", config.get("004").c_str());
+    ASSERT_STREQ("abcdefghijklmnopqrstuvwxyz", config.get("eihire004").c_str());
 }
 
 // 存在しないキーで値取得でout_of_range例外を投げる
@@ -127,10 +127,10 @@ TEST_F(ConfigurationTest, Configuration_get_003)
     p = p.append("other.properties");
     config.addPropertiesFile(p.generic_string());
 
-    ASSERT_STREQ("あいうえお", config.get("Eihire.properties", "1").c_str());
-    ASSERT_STREQ("XYZ_@", config.get("Eihire.properties", "2").c_str());
+    ASSERT_STREQ("あいうえお", config.get("Eihire.properties", "eihire1").c_str());
+    ASSERT_STREQ("XYZ_@", config.get("Eihire.properties", "eihire2").c_str());
     ASSERT_STREQ("c++ programming", config.get("Eihire.properties", "abcd").c_str());
-    ASSERT_STREQ("abcdefghijklmnopqrstuvwxyz", config.get("Eihire.properties", "004").c_str());
+    ASSERT_STREQ("abcdefghijklmnopqrstuvwxyz", config.get("Eihire.properties", "eihire004").c_str());
 
     ASSERT_STREQ("かきくけこ", config.get("other.properties", "other1").c_str());
     ASSERT_STREQ("here there everywhere", config.get("other.properties", "other2").c_str());
@@ -148,7 +148,7 @@ TEST_F(ConfigurationTest, Configuration_get_004)
 
     try
     {
-        config.get("other.properties", "1");
+        config.get("other.properties", "eihire1");
         FAIL() << "We shouldn't get here.";
     }
     catch (const std::out_of_range &e)
