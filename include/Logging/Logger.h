@@ -25,8 +25,9 @@ namespace Eihire::Logging
             FILE
         };
 
-        Logger(Level level, std::string name);
-        Logger(Level level, Channel channel, std::string name);
+        Logger(const std::string &name);
+        Logger(const Level level, const std::string &name);
+        Logger(const Level level, const Channel channel, const std::string &name);
         ~Logger();
 
         // コピー禁止
@@ -44,6 +45,9 @@ namespace Eihire::Logging
         void info(const std::string &message);
         void debug(const std::string &message);
         void trace(const std::string &message);
+
+        // ログの設定ファイル名(elog.propertiesで固定)
+        static const std::string PROPERTIES_FILE_NAME;
 
     private:
         void write(const std::string &level, const std::string &message);

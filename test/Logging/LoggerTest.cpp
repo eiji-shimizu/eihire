@@ -1,9 +1,11 @@
 #include "Logging/Logger.h"
+#include "Configuration/Configuration.h"
 #include "TestUtils.h"
 
 #include "gtest/gtest.h"
 
 using namespace Eihire::Logging;
+using namespace Eihire::Configuration;
 using namespace Eihire::TestUtils;
 
 class LoggerTest : public ::testing::Test
@@ -12,6 +14,10 @@ protected:
     // 試験開始時に一回だけ実行
     static void SetUpTestCase()
     {
+        std::filesystem::path p = getTestDataPath();
+        p.append("elog.properties");
+        Configuration &config = Configuration::getConfiguration();
+        config.addPropertiesFile(p.generic_string());
     }
 
     // 試験終了時に一回だけ実行
@@ -29,6 +35,17 @@ protected:
     {
     }
 };
+
+TEST_F(LoggerTest, Logger_constructor_001)
+{
+    Logger logger("testlog");
+    logger.trace("Logger_constructor_001:test message");
+    logger.debug("Logger_constructor_001:test message");
+    logger.info("Logger_constructor_001:test message");
+    logger.warn("Logger_constructor_001:test message");
+    logger.error("Logger_constructor_001:test message");
+    logger.fatal("Logger_constructor_001:test message");
+}
 
 TEST_F(LoggerTest, Logger_channel_001)
 {

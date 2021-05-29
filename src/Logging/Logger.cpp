@@ -1,12 +1,79 @@
 #include "Logging/Logger.h"
+#include "Configuration/Configuration.h"
+#include "Exception/Exception.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
+using namespace Eihire::Configuration;
+
 namespace Eihire::Logging
 {
-    Logger::Logger(Level level, std::string name)
+    const std::string Logger::PROPERTIES_FILE_NAME = "elog.properties";
+
+    namespace
+    {
+        Logger::Level convertToLevel(const std::string &level)
+        {
+            if (level == "TRACE")
+                return Logger::Level::TRACE;
+            if (level == "DEBUG")
+                return Logger::Level::DEBUG;
+            if (level == "INFO")
+                return Logger::Level::INFO;
+            if (level == "WARN")
+                return Logger::Level::WARN;
+            if (level == "ERROR")
+                return Logger::Level::ERROR;
+            if (level == "FATAL")
+                return Logger::Level::FATAL;
+
+            // デフォルトはINFO
+            return Logger::Level::INFO;
+        }
+
+        Logger::Channel convertToChannel(const std::string &channel)
+        {
+            if (channel == "CONSOLE")
+                return Logger::Channel::CONSOLE;
+            if (channel == "FILE")
+                return Logger::Channel::FILE;
+
+            // デフォルトはCONSOLE
+            return Logger::Channel::CONSOLE;
+        }
+
+    } // namespace
+
+    Logger::Logger(const std::string &name)
+        : level_{convertToLevel(::Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "LOG_LEVEL"))},
+          channel_{convertToChannel(::Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "CHANNEL"))},
+          name_{name},
+          ofs_{}
+    {
+        if (channel_ == Channel::FILE)
+        {
+            std::string outputFile = ::Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_PATH");
+            if (outputFile == "")
+            {
+                outputFile = ::Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_FILE");
+            }
+            if (outputFile == "")
+                outputFile = "eihireoutput.log";
+
+            ofs_.open(outputFile, std::ios_base::out | std::ios_base::app);
+
+            if (!ofs_)
+            {
+                std::ostringstream oss("");
+                oss << "can't open file '" << outputFile << "'.";
+                throw Exception::FileCannotOpenException(oss.str());
+            }
+        }
+    }
+
+    Logger::Logger(const Level level, const std::string &name)
         : level_{level},
           channel_{Channel::CONSOLE},
           name_{name},
@@ -15,7 +82,7 @@ namespace Eihire::Logging
         // noop
     }
 
-    Logger::Logger(Level level, Channel channel, std::string name)
+    Logger::Logger(const Level level, const Channel channel, const std::string &name)
         : level_{level},
           channel_{channel},
           name_{name},
@@ -29,12 +96,9 @@ namespace Eihire::Logging
 
     Logger::~Logger()
     {
-        if (channel_ == Channel::FILE)
+        if (ofs_.is_open())
         {
-            if (ofs_.is_open())
-            {
-                ofs_.close();
-            }
+            ofs_.close();
         }
     }
 
