@@ -21,13 +21,15 @@ endif(WIN32)
 
 link_directories(GOOGLETEST_LIBRARY_DIRS)
 
-add_executable(EihireTest Configuration/ConfigurationTest.cpp
+add_executable(EihireTest Program/ProgramTest.cpp
+                            Configuration/ConfigurationTest.cpp
                             Configuration/PropertiesMapTest.cpp
                             Logging/LoggerTest.cpp
                             TestUtils/TestUtils.cpp
                             )
 
 target_link_libraries(EihireTest
+                        PRIVATE ProgramMod
                         PRIVATE LoggingMod
                         PRIVATE ConfigurationMod
                         PRIVATE ExceptionMod
