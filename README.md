@@ -27,3 +27,5 @@ CMakeを利用する<br>
     - エラー内容を見分けやすくするための簡単な独自例外クラスが入る
 - Logging
     - ログ出力のためのクラスが入る
+- Program
+    - LoggingやConfigurationの使用を簡単にする機能を持つクラスが入る
