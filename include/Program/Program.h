@@ -1,6 +1,7 @@
 #ifndef EIHIRE_PROGRAM_Program_INCLUDED
 #define EIHIRE_PROGRAM_Program_INCLUDED
 
+#include "Configuration/Configuration.h"
 #include "Logging/Logger.h"
 
 #include <string>
@@ -15,6 +16,9 @@ namespace Eihire::Program
         static Program &initialize(const std::string configurationDirectoryPath);
         static Program &initialize(const std::filesystem::path configurationDirectoryPath);
 
+        // デフォルトで読み込む設定ファイル名(econf.properties)
+        static const std::string DEFAULT_PROPERTIES_FILE_NAME;
+
         ~Program();
 
         // コピー禁止
@@ -24,6 +28,9 @@ namespace Eihire::Program
         Program(Program &&) = delete;
         Program &operator=(Program &&) = delete;
 
+        // コンフィグへの参照を返す
+        static Eihire::Configuration::Configuration &config();
+        // デフォルトのロガーの参照を返す
         static Eihire::Logging::Logger &logger();
 
     private:
