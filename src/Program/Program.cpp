@@ -3,6 +3,8 @@
 
 namespace Eihire::Program
 {
+    const std::string Program::DEFAULT_PROPERTIES_FILE_NAME = "econf.properties";
+
     Program &Program::instance()
     {
         static Program *instance = new Program();
@@ -18,13 +20,20 @@ namespace Eihire::Program
     Program &Program::initialize(const std::filesystem::path configurationDirectoryPath)
     {
         std::filesystem::path p = configurationDirectoryPath;
-        p.append(Eihire::Logging::Logger::PROPERTIES_FILE_NAME);
-        Eihire::Configuration::Configuration::getConfiguration().addPropertiesFile(p.generic_string());
+        std::filesystem::path pLogConf = p;
+        p.append(DEFAULT_PROPERTIES_FILE_NAME);
+        pLogConf.append(Eihire::Logging::Logger::PROPERTIES_FILE_NAME);
+        Eihire::Configuration::Configuration::getConfiguration().addPropertiesFile({p.generic_string(), pLogConf.generic_string()});
         return instance();
     }
 
     Program::Program() = default;
     Program::~Program() = default;
+
+    Eihire::Configuration::Configuration &Program::config()
+    {
+        return Eihire::Configuration::Configuration::getConfiguration();
+    }
 
     Eihire::Logging::Logger &Program::logger()
     {

@@ -33,6 +33,29 @@ protected:
 
 TEST_F(ProgramTest, Program_instance_001)
 {
+    Program &insA = Program::instance();
+    Program &insB = Program::instance();
+    if (&insA == &insB)
+    {
+        SUCCEED();
+    }
+    else
+    {
+        FAIL() << "We shouldn't get here.";
+    }
+}
+
+TEST_F(ProgramTest, Program_config_001)
+{
+    Program &ins = Program::instance();
+    ASSERT_STREQ("あいうえお", ins.config().get("key1").c_str());
+    ASSERT_STREQ("XYZ_@", ins.config().get("key2").c_str());
+    ASSERT_STREQ("c++ programming", ins.config().get("key3").c_str());
+    ASSERT_STREQ("abcdefghijklmnopqrstuvwxyz", ins.config().get("key4").c_str());
+}
+
+TEST_F(ProgramTest, Program_logger_001)
+{
     Program &ins = Program::instance();
     ins.logger().E_TRACE("Program_instance_001:test message");
     ins.logger().E_DEBUG("Program_instance_001:test message");
