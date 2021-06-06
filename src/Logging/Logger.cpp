@@ -45,6 +45,11 @@ namespace Eihire::Logging
             return Logger::Channel::CONSOLE;
         }
 
+        void output(std::ostream &os, const std::string &message)
+        {
+            os << message << std::endl;
+        }
+
     } // namespace
 
     Logger::Logger(const std::string &name)
@@ -150,16 +155,17 @@ namespace Eihire::Logging
         std::ostringstream oss("");
         oss << fLevel << " ";
         oss << "file: " << p.filename().generic_string() << " " << functionName << " line: " << line << " ";
-        oss << message << std::endl;
+        oss << message;
 
-        // 出力先に応じて参照先を格納するポインタ
-        std::ostream *pos = nullptr;
-        if (channel_ == Channel::CONSOLE)
-            pos = &std::cout;
-        else if (channel_ == Channel::FILE)
-            pos = &ofs_;
-
-        *pos << oss.str();
+        switch (channel_)
+        {
+        case Channel::CONSOLE:
+            output(std::cout, oss.str());
+            break;
+        case Channel::FILE:
+            output(ofs_, oss.str());
+            break;
+        }
     }
 
 } // namespace Eihire::Logging
