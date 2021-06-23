@@ -1,4 +1,4 @@
-#include "Configuration/PropertiesMap.h"
+#include "Config/PropertiesMap.h"
 #include "Exception/Exception.h"
 #include "TestUtils.h"
 
@@ -6,7 +6,7 @@
 
 #include <string>
 
-using namespace Eihire::Configuration;
+using namespace Eihire::Config;
 using namespace Eihire::Exception;
 using namespace Eihire::TestUtils;
 

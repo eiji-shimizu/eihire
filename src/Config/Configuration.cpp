@@ -1,9 +1,9 @@
-#include "Configuration/Configuration.h"
+#include "Config/Configuration.h"
 #include "Exception/Exception.h"
 
 #include <iostream>
 
-namespace Eihire::Configuration
+namespace Eihire::Config
 {
     namespace
     {
@@ -130,4 +130,4 @@ namespace Eihire::Configuration
         return propertiesMapList_;
     }
 
-} // namespace Eihire::Configuration
+} // namespace Eihire::Config

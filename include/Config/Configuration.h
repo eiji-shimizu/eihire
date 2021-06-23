@@ -1,11 +1,11 @@
-#ifndef EIHIRE_CONFIGURATION_Configuration_INCLUDED
-#define EIHIRE_CONFIGURATION_Configuration_INCLUDED
+#ifndef EIHIRE_CONFIG_Configuration_INCLUDED
+#define EIHIRE_CONFIG_Configuration_INCLUDED
 
 #include "PropertiesMap.h"
 
 #include <vector>
 
-namespace Eihire::Configuration
+namespace Eihire::Config
 {
     class Configuration
     {
@@ -51,6 +51,6 @@ namespace Eihire::Configuration
         std::vector<std::string> filePathList_;
     };
 
-} // namespace Eihire::Configuration
+} // namespace Eihire::Config
 
-#endif // EIHIRE_CONFIGURATION_Configuration_INCLUDED
+#endif // EIHIRE_CONFIG_Configuration_INCLUDED

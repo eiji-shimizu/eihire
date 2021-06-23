@@ -1,5 +1,5 @@
 #include "Program/Program.h"
-#include "Configuration/Configuration.h"
+#include "Config/Configuration.h"
 
 namespace Eihire::Program
 {
@@ -23,16 +23,16 @@ namespace Eihire::Program
         std::filesystem::path pLogConf = p;
         p.append(DEFAULT_PROPERTIES_FILE_NAME);
         pLogConf.append(Eihire::Logging::Logger::PROPERTIES_FILE_NAME);
-        Eihire::Configuration::Configuration::getConfiguration().addPropertiesFile({p.generic_string(), pLogConf.generic_string()});
+        Eihire::Config::Configuration::getConfiguration().addPropertiesFile({p.generic_string(), pLogConf.generic_string()});
         return instance();
     }
 
     Program::Program() = default;
     Program::~Program() = default;
 
-    Eihire::Configuration::Configuration &Program::config()
+    Eihire::Config::Configuration &Program::config()
     {
-        return Eihire::Configuration::Configuration::getConfiguration();
+        return Eihire::Config::Configuration::getConfiguration();
     }
 
     Eihire::Logging::Logger &Program::logger()

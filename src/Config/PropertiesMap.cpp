@@ -1,10 +1,10 @@
-#include "Configuration/PropertiesMap.h"
+#include "Config/PropertiesMap.h"
 #include "Exception/Exception.h"
 
 #include <fstream>
 #include <sstream>
 #include <filesystem>
-namespace Eihire::Configuration
+namespace Eihire::Config
 {
 
     namespace
@@ -118,4 +118,4 @@ namespace Eihire::Configuration
         return properties_;
     }
 
-} // namespace Eihire::Configuration
+} // namespace Eihire::Config

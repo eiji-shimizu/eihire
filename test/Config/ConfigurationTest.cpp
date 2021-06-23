@@ -1,9 +1,9 @@
-#include "Configuration/Configuration.h"
+#include "Config/Configuration.h"
 #include "TestUtils.h"
 
 #include "gtest/gtest.h"
 
-using namespace Eihire::Configuration;
+using namespace Eihire::Config;
 using namespace Eihire::TestUtils;
 
 class ConfigurationTest : public ::testing::Test

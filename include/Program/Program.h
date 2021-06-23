@@ -1,7 +1,7 @@
 #ifndef EIHIRE_PROGRAM_Program_INCLUDED
 #define EIHIRE_PROGRAM_Program_INCLUDED
 
-#include "Configuration/Configuration.h"
+#include "Config/Configuration.h"
 #include "Logging/Logger.h"
 
 #include <string>
@@ -29,7 +29,7 @@ namespace Eihire::Program
         Program &operator=(Program &&) = delete;
 
         // コンフィグへの参照を返す
-        static Eihire::Configuration::Configuration &config();
+        static Eihire::Config::Configuration &config();
         // デフォルトのロガーの参照を返す
         static Eihire::Logging::Logger &logger();
 

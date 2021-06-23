@@ -1,11 +1,11 @@
 #include "Logging/Logger.h"
-#include "Configuration/Configuration.h"
+#include "Config/Configuration.h"
 #include "TestUtils.h"
 
 #include "gtest/gtest.h"
 
 using namespace Eihire::Logging;
-using namespace Eihire::Configuration;
+using namespace Eihire::Config;
 using namespace Eihire::TestUtils;
 
 class LoggerTest : public ::testing::Test

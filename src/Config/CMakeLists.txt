@@ -1,10 +1,10 @@
-# ConfigurationMod
-add_library(ConfigurationMod STATIC
+# ConfigMod
+add_library(ConfigMod STATIC
             Configuration.cpp
             PropertiesMap.cpp)
 
-target_link_libraries(ConfigurationMod
+target_link_libraries(ConfigMod
                         PRIVATE ExceptionMod)
 
-target_include_directories(ConfigurationMod
+target_include_directories(ConfigMod
                             PRIVATE ${EIHIRE_INCLUDE_DIRS})

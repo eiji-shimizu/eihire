@@ -1,10 +1,10 @@
-#ifndef EIHIRE_CONFIGURATION_PropertiesMap_INCLUDED
-#define EIHIRE_CONFIGURATION_PropertiesMap_INCLUDED
+#ifndef EIHIRE_CONFIG_PropertiesMap_INCLUDED
+#define EIHIRE_CONFIG_PropertiesMap_INCLUDED
 
 #include <string>
 #include <map>
 
-namespace Eihire::Configuration
+namespace Eihire::Config
 {
     class PropertiesMap
     {
@@ -33,6 +33,6 @@ namespace Eihire::Configuration
         std::map<std::string, std::string> properties_;
     };
 
-} // namespace Eihire::Configuration
+} // namespace Eihire::Config
 
-#endif // EIHIRE_CONFIGURATION_PropertiesMap_INCLUDED
+#endif // EIHIRE_CONFIG_PropertiesMap_INCLUDED

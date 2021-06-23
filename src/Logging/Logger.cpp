@@ -1,5 +1,5 @@
 #include "Logging/Logger.h"
-#include "Configuration/Configuration.h"
+#include "Config/Configuration.h"
 #include "Exception/Exception.h"
 
 #include <iostream>
@@ -7,7 +7,7 @@
 #include <sstream>
 #include <filesystem>
 
-using namespace Eihire::Configuration;
+using namespace Eihire::Config;
 
 namespace Eihire::Logging
 {
@@ -53,17 +53,17 @@ namespace Eihire::Logging
     } // namespace
 
     Logger::Logger(const std::string &name)
-        : level_{convertToLevel(::Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "LOG_LEVEL"))},
-          channel_{convertToChannel(::Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "CHANNEL"))},
+        : level_{convertToLevel(Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "LOG_LEVEL"))},
+          channel_{convertToChannel(Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "CHANNEL"))},
           name_{name},
           ofs_{}
     {
         if (channel_ == Channel::FILE)
         {
-            std::string outputFile = ::Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_PATH");
+            std::string outputFile = Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_PATH");
             if (outputFile == "")
             {
-                outputFile = ::Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_FILE");
+                outputFile = Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_FILE");
             }
             if (outputFile == "")
                 outputFile = "eihireoutput.log";
