@@ -24,6 +24,7 @@ link_directories(GOOGLETEST_LIBRARY_DIRS)
 add_executable(EihireTest Program/ProgramTest.cpp
                             Config/ConfigurationTest.cpp
                             Config/PropertiesMapTest.cpp
+                            Exception/ExceptionTest.cpp
                             Logging/LoggerTest.cpp
                             TestUtils/TestUtils.cpp
                             )
