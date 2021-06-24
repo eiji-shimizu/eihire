@@ -46,8 +46,7 @@ TEST_F(ExceptionTest, Exception_Base_002)
 {
     try
     {
-        //throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message", 1));
-        throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message", std::logic_error{"inner message"}));
+        throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message"), std::logic_error{"inner message"});
     }
     catch (const std::exception &e)
     {
@@ -57,9 +56,9 @@ TEST_F(ExceptionTest, Exception_Base_002)
 
 TEST_F(ExceptionTest, Exception_Base_003)
 {
-    ExceptionBase eb{E_EXCEPTION_BASE_ARGS("test", std::runtime_error{"inner aaaa"})};
-    //ExceptionBase eb{E_EXCEPTION_BASE_ARGS("test", 1)};
-    //ExceptionBase eb{E_EXCEPTION_BASE_ARGS("test", "abc")};
+    ExceptionBase eb{E_EXCEPTION_BASE_ARGS("test"), std::runtime_error{"inner aaaa"}};
+    // ExceptionBase eb{E_EXCEPTION_BASE_ARGS("test"), 1};
+    // ExceptionBase eb{E_EXCEPTION_BASE_ARGS("test"), "abc"};
     std::cout << eb.what() << std::endl;
     try
     {
@@ -73,17 +72,17 @@ TEST_F(ExceptionTest, Exception_Base_003)
                 }
                 catch (const std::exception &e)
                 {
-                    throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message1", e));
+                    throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message1"), e);
                 }
             }
             catch (const std::exception &e)
             {
-                throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message2", e));
+                throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message2"), e);
             }
         }
         catch (const std::exception &e)
         {
-            throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message3", e));
+            throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message3"), e);
         }
     }
     catch (const std::exception &e)
@@ -110,7 +109,7 @@ TEST_F(ExceptionTest, Exception_Base_004)
                 }
                 catch (const std::exception &e)
                 {
-                    throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message1", e));
+                    throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message1"), e);
                 }
             }
             catch (const std::exception &e)
@@ -120,7 +119,7 @@ TEST_F(ExceptionTest, Exception_Base_004)
         }
         catch (const std::exception &e)
         {
-            throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message3", e));
+            throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message3"), e);
         }
     }
     catch (const std::exception &e)
@@ -133,9 +132,9 @@ TEST_F(ExceptionTest, Exception_Base_005)
 {
     // コピー代入テスト
     {
-        ExceptionBase eb1{E_EXCEPTION_BASE_ARGS("eb1 test", std::runtime_error{"inner runtime_error"})};
+        ExceptionBase eb1{E_EXCEPTION_BASE_ARGS("eb1 test"), std::runtime_error{"inner runtime_error"}};
         std::cout << "eb1 : " << eb1.what() << std::endl;
-        ExceptionBase from1{E_EXCEPTION_BASE_ARGS("from1 test", std::logic_error{"inner logic_error"})};
+        ExceptionBase from1{E_EXCEPTION_BASE_ARGS("from1 test"), std::logic_error{"inner logic_error"}};
         std::cout << "from1 : " << from1.what() << std::endl;
         ASSERT_STRNE(from1.what(), eb1.what());
         eb1 = from1;
@@ -150,9 +149,9 @@ TEST_F(ExceptionTest, Exception_Base_005)
     std::cout << std::endl;
     // ムーブ代入テスト
     {
-        ExceptionBase eb2{E_EXCEPTION_BASE_ARGS("eb2 test", std::runtime_error{"inner runtime_error"})};
+        ExceptionBase eb2{E_EXCEPTION_BASE_ARGS("eb2 test"), std::runtime_error{"inner runtime_error"}};
         std::cout << "eb2 : " << eb2.what() << std::endl;
-        ExceptionBase from2{E_EXCEPTION_BASE_ARGS("from2 test", std::logic_error{"inner logic_error"})};
+        ExceptionBase from2{E_EXCEPTION_BASE_ARGS("from2 test"), std::logic_error{"inner logic_error"}};
         std::cout << "from2 : " << from2.what() << std::endl;
 
         std::string temp{from2.what()};
@@ -170,7 +169,7 @@ TEST_F(ExceptionTest, Exception_Base_005)
     std::cout << std::endl;
     // コピーコンストラクトテスト
     {
-        ExceptionBase from3{E_EXCEPTION_BASE_ARGS("from3 test", std::logic_error{"inner logic_error"})};
+        ExceptionBase from3{E_EXCEPTION_BASE_ARGS("from3 test"), std::logic_error{"inner logic_error"}};
         std::cout << "from3 : " << from3.what() << std::endl;
         ExceptionBase eb3{from3};
         ASSERT_STREQ(from3.what(), eb3.what());
@@ -181,7 +180,7 @@ TEST_F(ExceptionTest, Exception_Base_005)
     std::cout << std::endl;
     // ムーブコンストラクトテスト
     {
-        ExceptionBase from4{E_EXCEPTION_BASE_ARGS("from4 test", std::logic_error{"inner logic_error"})};
+        ExceptionBase from4{E_EXCEPTION_BASE_ARGS("from4 test"), std::logic_error{"inner logic_error"}};
         std::cout << "from4 : " << from4.what() << std::endl;
         std::string temp{from4.what()};
         ExceptionBase eb4{std::move(from4)};
@@ -194,8 +193,8 @@ TEST_F(ExceptionTest, Exception_Base_005)
     std::cout << std::endl;
     // swapテスト
     {
-        ExceptionBase a{E_EXCEPTION_BASE_ARGS("a test", std::runtime_error{"inner runtime_error"})};
-        ExceptionBase b{E_EXCEPTION_BASE_ARGS("b test", std::runtime_error{"inner runtime_error"})};
+        ExceptionBase a{E_EXCEPTION_BASE_ARGS("a test"), std::runtime_error{"inner runtime_error"}};
+        ExceptionBase b{E_EXCEPTION_BASE_ARGS("b test"), std::runtime_error{"inner runtime_error"}};
         std::string tempA{a.what()};
         std::string tempB{b.what()};
         std::swap(a, b);
@@ -206,5 +205,74 @@ TEST_F(ExceptionTest, Exception_Base_005)
 
         std::swap(a, a);
         std::cout << "a : " << a.what() << std::endl;
+    }
+}
+
+TEST_F(ExceptionTest, ParseException_001)
+{
+    try
+    {
+        try
+        {
+            try
+            {
+                try
+                {
+                    throw std::logic_error("inner message");
+                }
+                catch (const std::exception &e)
+                {
+                    throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message1"), e);
+                }
+            }
+            catch (const std::exception &e)
+            {
+                throw ParseException(E_EXCEPTION_BASE_ARGS("parse error"), e);
+            }
+        }
+        catch (const std::exception &e)
+        {
+            throw;
+        }
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+}
+
+TEST_F(ExceptionTest, FileCannotOpenException_001)
+{
+    try
+    {
+        try
+        {
+            try
+            {
+                try
+                {
+                    throw FileCannotOpenException("inner message1");
+                }
+                catch (const std::exception &e)
+                {
+                    std::cerr << e.what() << '\n';
+                    throw ParseException(E_EXCEPTION_BASE_ARGS("inner message2"), e);
+                }
+            }
+            catch (const std::exception &e)
+            {
+                std::cerr << e.what() << '\n';
+                throw FileCannotOpenException(E_EXCEPTION_BASE_ARGS("file can not open."));
+            }
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+            throw FileCannotOpenException(E_EXCEPTION_BASE_ARGS("file can not open again."), e);
+        }
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
     }
 }
