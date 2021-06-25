@@ -21,11 +21,13 @@ CMakeを利用する<br>
 その配下にREADMEを作成して機能を記述する予定<br>
 <br>
 今現在の簡単な一覧<br>
-- Configuration
+- Config
     - 設定ファイル(****.properties)を指定してその内容を読み込んだ連想配列を作るクラス等が入る
 - Exception
     - エラー内容を見分けやすくするための簡単な独自例外クラスが入る
 - Logging
     - ログ出力のためのクラスが入る
 - Program
-    - LoggingやConfigurationの使用を簡単にする機能を持つクラスが入る
+    - LoggingやConfigの使用を簡単にする機能を持つクラスが入る
+- Util
+    - JavaのFinallyを模したFinallyクラス等ユーティリティとして使えるクラスが入る
