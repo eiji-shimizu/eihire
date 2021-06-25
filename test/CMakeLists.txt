@@ -26,6 +26,7 @@ add_executable(EihireTest Program/ProgramTest.cpp
                             Config/PropertiesMapTest.cpp
                             Exception/ExceptionTest.cpp
                             Logging/LoggerTest.cpp
+                            Util/FinallyTest.cpp
                             TestUtils/TestUtils.cpp
                             )
 
