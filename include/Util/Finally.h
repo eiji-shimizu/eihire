@@ -2,7 +2,6 @@
 #define EIHIRE_UTIL_FINALLY_INCLUDED
 
 #include <functional>
-#include <iostream>
 
 namespace Eihire::Util
 {
