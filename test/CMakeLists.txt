@@ -26,6 +26,7 @@ add_executable(EihireTest Program/ProgramTest.cpp
                             Config/PropertiesMapTest.cpp
                             Exception/ExceptionTest.cpp
                             Logging/LoggerTest.cpp
+                            Util/DictionaryTest.cpp
                             Util/FinallyTest.cpp
                             TestUtils/TestUtils.cpp
                             )
@@ -34,6 +35,7 @@ target_link_libraries(EihireTest
                         PRIVATE ProgramMod
                         PRIVATE LoggingMod
                         PRIVATE ConfigMod
+                        PRIVATE UtilMod
                         PRIVATE ExceptionMod
                         ${ADD_LIBRARIES}
                         )

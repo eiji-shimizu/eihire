@@ -8,7 +8,7 @@ namespace Eihire::Util
     class Finally final
     {
     public:
-        Finally(std::function<void()> f, bool exceptionHandling = true)
+        explicit Finally(std::function<void()> f, bool exceptionHandling = true)
             : cleanUpFunction_{f},
               exceptionHandling_{exceptionHandling}
         {
