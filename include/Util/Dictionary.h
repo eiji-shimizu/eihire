@@ -3,17 +3,11 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include <any>
 
 namespace Eihire::Util
 {
-    template <typename K, typename V>
-    class Dictionary;
-
-    template <>
-    class Dictionary<std::string, std::any>;
-    using JSON = Dictionary<std::string, std::any>;
-
     template <typename K, typename V>
     class Dictionary
     {
@@ -28,18 +22,18 @@ namespace Eihire::Util
         Dictionary(Dictionary &&) = default;
         Dictionary &operator=(Dictionary &&) = default;
 
-        bool isContain(const K &key) const
+        virtual bool isContain(const K &key) const
         {
             auto it = elements_.find(key);
             return it != elements_.end();
         }
 
-        V get(const K &key) const
+        virtual V get(const K &key) const
         {
             return elements_.at(key);
         }
 
-        void set(const K &key, const V &value)
+        virtual void set(const K &key, const V &value)
         {
             auto result = elements_.insert(std::make_pair(key, value));
             if (!result.second)
@@ -57,29 +51,33 @@ namespace Eihire::Util
         std::map<K, V> elements_;
     };
 
-    template <>
-    class Dictionary<std::string, std::any>
+    using JSON_BASE = Dictionary<std::string, std::any>;
+
+    class JSON : public JSON_BASE
     {
     public:
-        Dictionary();
-        ~Dictionary();
+        JSON();
+        ~JSON();
 
         // コピー演算
-        Dictionary(const Dictionary &);
-        Dictionary &operator=(const Dictionary &);
+        JSON(const JSON &);
+        JSON &operator=(const JSON &);
         // ムーブ演算
-        Dictionary(Dictionary &&);
-        Dictionary &operator=(Dictionary &&);
+        JSON(JSON &&);
+        JSON &operator=(JSON &&);
 
-        bool isContain(const std::string &key) const;
-        std::any get(const std::string &key) const;
-        void set(const std::string &key, const std::any &value);
-        const std::map<std::string, std::any> &elements() const;
+        void set(const std::string &key, const std::any &value) override;
 
-        
+        // overrideではない valueがconst char*であった場合にstringに変換してセットする
+        void set(const std::string &key, const char *value);
 
-    private:
-        std::map<std::string, std::any> elements_;
+        std::map<std::string, std::any> getObject(const std::string &key);
+        std::vector<std::any> getArray(const std::string &key);
+        int getInt(const std::string &key);
+        double getDouble(const std::string &key);
+        std::string getString(const std::string &key);
+        bool getBool(const std::string &key);
+        std::nullptr_t getNull(const std::string &key);
     };
 
 } // namespace Eihire::Util

@@ -48,7 +48,12 @@ TEST_F(DictionaryTest, Dictionary_001)
     sd.set("3", "THREE");
 
     JSON j;
-    j.set("3", "THREE");
+    j.set("3", "THIRD");
+    j.set("9", 99);
     JSON j2;
     j2 = j;
+    ASSERT_EQ("THIRD", j.getString("3"));
+    ASSERT_EQ("THIRD", j2.getString("3"));
+    ASSERT_EQ(99, j.getInt("9"));
+    ASSERT_EQ(99, j2.getInt("9"));
 }
