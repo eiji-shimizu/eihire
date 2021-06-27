@@ -71,13 +71,17 @@ namespace Eihire::Util
         // overrideではない valueがconst char*であった場合にstringに変換してセットする
         void set(const std::string &key, const char *value);
 
-        std::map<std::string, std::any> getObject(const std::string &key);
-        std::vector<std::any> getArray(const std::string &key);
-        int getInt(const std::string &key);
-        double getDouble(const std::string &key);
-        std::string getString(const std::string &key);
-        bool getBool(const std::string &key);
-        std::nullptr_t getNull(const std::string &key);
+        JSON getObject(const std::string &key) const;
+        std::vector<std::any> getArray(const std::string &key) const;
+        int getInt(const std::string &key) const;
+        double getDouble(const std::string &key) const;
+        std::string getString(const std::string &key) const;
+        bool getBool(const std::string &key) const;
+        std::nullptr_t getNull(const std::string &key) const;
+
+        std::string toString() const;
+
+        static JSON createJSON(const std::string &jsonStr);
     };
 
 } // namespace Eihire::Util
