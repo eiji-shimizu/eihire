@@ -44,7 +44,10 @@ namespace Eihire::Util
 
     void JSON::set(const std::string &key, const char *value)
     {
-        JSON_BASE::set(key, std::string{value});
+        if (value == nullptr)
+            JSON_BASE::set(key, nullptr);
+        else
+            JSON_BASE::set(key, std::string{value});
     }
 
     int JSON::getInt(const std::string &key)
@@ -52,9 +55,24 @@ namespace Eihire::Util
         return getT<int>(elements_, key);
     }
 
+    double JSON::getDouble(const std::string &key)
+    {
+        return getT<double>(elements_, key);
+    }
+
     std::string JSON::getString(const std::string &key)
     {
         return getT<std::string>(elements_, key);
+    }
+
+    bool JSON::getBool(const std::string &key)
+    {
+        return getT<bool>(elements_, key);
+    }
+
+    std::nullptr_t JSON::getNull(const std::string &key)
+    {
+        return getT<std::nullptr_t>(elements_, key);
     }
 
 } // namespace Eihire::Util

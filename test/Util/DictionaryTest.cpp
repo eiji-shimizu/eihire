@@ -57,3 +57,24 @@ TEST_F(DictionaryTest, Dictionary_001)
     ASSERT_EQ(99, j.getInt("9"));
     ASSERT_EQ(99, j2.getInt("9"));
 }
+
+TEST_F(DictionaryTest, JSON_setT_001)
+{
+    JSON j;
+    j.set("int", 99);
+    j.set("double", 3.14);
+    j.set("string", "あいうえお");
+    j.set("bool", true);
+    j.set("null", nullptr);
+
+    ASSERT_EQ(99, j.getInt("int"));
+    ASSERT_DOUBLE_EQ(3.14, j.getDouble("double"));
+    ASSERT_STREQ("あいうえお", j.getString("string").c_str());
+    ASSERT_TRUE(j.getBool("bool"));
+    ASSERT_EQ(nullptr, j.getNull("null"));
+
+    // for(auto& p : j.elements())
+    // {
+    //     std::cout << p.second.type().name() << std::endl;
+    // }
+}
