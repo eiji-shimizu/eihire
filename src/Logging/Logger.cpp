@@ -45,18 +45,14 @@ namespace Eihire::Logging {
             return Logger::Channel::CONSOLE;
         }
 
-        void output(std::ostream &os, const std::string &message)
-        {
-            os << message << std::endl;
-        }
-
     } // namespace
 
     Logger::Logger(const std::string &name)
         : level_{convertToLevel(Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "LOG_LEVEL"))},
           channel_{convertToChannel(Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "CHANNEL"))},
           name_{name},
-          ofs_{}
+          ofs_{},
+          mt_{}
     {
         initialize();
     }
@@ -65,7 +61,8 @@ namespace Eihire::Logging {
         : level_{level},
           channel_{convertToChannel(Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "CHANNEL"))},
           name_{name},
-          ofs_{}
+          ofs_{},
+          mt_{}
     {
         initialize();
     }
@@ -74,7 +71,8 @@ namespace Eihire::Logging {
         : level_{level},
           channel_{channel},
           name_{name},
-          ofs_{}
+          ofs_{},
+          mt_{}
     {
         initialize();
     }
@@ -133,14 +131,14 @@ namespace Eihire::Logging {
         oss << fLevel << " ";
         oss << "file: " << p.filename().generic_string() << " " << functionName << " line: " << line << " ";
         oss << message;
-        oss << " " << name_ << " ";
+        oss << " " << name_ << std::endl;
 
         switch (channel_) {
         case Channel::CONSOLE:
-            output(std::cout, oss.str());
+            flush(std::cout, oss.str());
             break;
         case Channel::FILE:
-            output(ofs_, oss.str());
+            flush(ofs_, oss.str());
             break;
         }
     }
@@ -163,6 +161,12 @@ namespace Eihire::Logging {
                 throw Exception::FileCannotOpenException(E_EXCEPTION_BASE_ARGS(oss.str()));
             }
         }
+    }
+
+    void Logger::flush(std::ostream &os, const std::string &message)
+    {
+        std::lock_guard<std::mutex> lock{mt_};
+        os << message << std::flush;
     }
 
 } // namespace Eihire::Logging

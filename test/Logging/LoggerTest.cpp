@@ -5,6 +5,11 @@
 
 #include "gtest/gtest.h"
 
+#include <chrono>
+#include <random>
+#include <thread>
+#include <vector>
+
 using namespace Eihire::Logging;
 using namespace Eihire::Config;
 using namespace Eihire::TestUtils;
@@ -21,19 +26,13 @@ protected:
     }
 
     // 試験終了時に一回だけ実行
-    static void TearDownTestCase()
-    {
-    }
+    static void TearDownTestCase() {}
 
     // 各テストケース実行前に実行
-    virtual void SetUp()
-    {
-    }
+    virtual void SetUp() {}
 
     // 各テストケース実行後に実行
-    virtual void TearDown()
-    {
-    }
+    virtual void TearDown() {}
 };
 
 TEST_F(LoggerTest, Logger_constructor_001)
@@ -125,4 +124,25 @@ TEST_F(LoggerTest, Logger_getLogger_001)
     ASSERT_NE(&logger1, &logger2);
     ASSERT_NE(&logger2, &logger4);
     ASSERT_NE(&logger4, &logger1);
+}
+
+TEST_F(LoggerTest, Logger_parallel_001)
+{
+    std::random_device seed_gen;
+    std::mt19937 engine(seed_gen());
+    std::uniform_real_distribution<> dist(0, 1000);
+
+    Logger &logger = Logger::getLogger<LoggerTest>();
+    std::vector<std::thread> v;
+    for (int i = 0; i < 10; ++i) {
+        v.push_back(std::thread{[i, &logger, &engine, &dist] {
+            for (int j = 0; j < 10; ++j) {
+                int milliseconds = dist(engine);
+                std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+                logger.E_DEBUG("message from thread" + std::to_string(i) + "," + std::to_string(j) + "time.");
+            }
+        }});
+    }
+    for (auto &t : v)
+        t.join();
 }

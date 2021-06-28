@@ -2,6 +2,7 @@
 #define EIHIRE_LOGGING_LOGGER_INCLUDED
 
 #include <fstream>
+#include <mutex>
 #include <string>
 
 #define E_FATAL(MESSAGE) fatal(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
@@ -53,17 +54,20 @@ namespace Eihire::Logging {
         // ログの設定ファイル名(elog.propertiesで固定)
         static const std::string PROPERTIES_FILE_NAME;
 
+        // typeid(T).name()をname_としたLoggerインスタンスの参照を返す
         template <typename T>
         static Logger &getLogger();
 
     private:
         void initialize();
         void write(const std::string &level, const char *fileName, const char *functionName, uint64_t line, const std::string &message);
+        void flush(std::ostream &os, const std::string &message);
 
         Level level_;
         Channel channel_;
         std::string name_;
         std::ofstream ofs_;
+        std::mutex mt_;
     };
 
     template <typename T>
