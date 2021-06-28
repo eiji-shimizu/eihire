@@ -135,6 +135,7 @@ namespace Eihire::Logging
         oss << fLevel << " ";
         oss << "file: " << p.filename().generic_string() << " " << functionName << " line: " << line << " ";
         oss << message;
+        oss << " " << name_ << " ";
 
         switch (channel_)
         {

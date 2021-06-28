@@ -56,6 +56,9 @@ namespace Eihire::Logging
         // ログの設定ファイル名(elog.propertiesで固定)
         static const std::string PROPERTIES_FILE_NAME;
 
+        template <typename T>
+        static Logger &getLogger();
+
     private:
         void initialize();
         void write(const std::string &level, const char *fileName, const char *functionName, uint64_t line, const std::string &message);
@@ -65,6 +68,13 @@ namespace Eihire::Logging
         std::string name_;
         std::ofstream ofs_;
     };
+
+    template <typename T>
+    Logger &Logger::getLogger()
+    {
+        static Logger *instance = new Logger(typeid(T).name());
+        return *instance;
+    }
 
 } // Eihire::Logging
 

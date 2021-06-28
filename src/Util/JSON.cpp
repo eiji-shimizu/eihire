@@ -1,9 +1,12 @@
 #include "Util/Dictionary.h"
 #include "Exception/Exception.h"
+#include "Logging/Logger.h"
 
 #include <sstream>
 #include <cassert>
 #include <iostream>
+
+using namespace Eihire::Logging;
 
 namespace Eihire::Util
 {
@@ -89,6 +92,7 @@ namespace Eihire::Util
     void JSON::set(const std::string &key, const std::any &value)
     {
         assert(typeValidation(value));
+        Logger::getLogger<JSON>().E_DEBUG("here----------------------");
         JSON_BASE::set(key, value);
     }
 

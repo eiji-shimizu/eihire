@@ -1,5 +1,6 @@
 #include "Logging/Logger.h"
 #include "Config/Configuration.h"
+#include "Util/Finally.h"
 #include "TestUtils.h"
 
 #include "gtest/gtest.h"
@@ -108,4 +109,21 @@ TEST_F(LoggerTest, Logger_level_001)
     logger.E_WARN("Logger_level_001:FATAL Level");
     logger.E_ERROR("Logger_level_001:FATAL Level");
     logger.E_FATAL("Logger_level_001:FATAL Level");
+}
+
+TEST_F(LoggerTest, Logger_getLogger_001)
+{
+    Logger &logger1 = Logger::getLogger<Configuration>();
+    Logger &logger2 = Logger::getLogger<Eihire::Util::Finally>();
+    Logger &logger3 = Logger::getLogger<Configuration>();
+    Logger &logger4 = Logger::getLogger<std::string>();
+    Logger &logger5 = Logger::getLogger<std::string>();
+    Logger &logger6 = Logger::getLogger<Eihire::Util::Finally>();
+
+    ASSERT_EQ(&logger1, &logger3);
+    ASSERT_EQ(&logger2, &logger6);
+    ASSERT_EQ(&logger4, &logger5);
+    ASSERT_NE(&logger1, &logger2);
+    ASSERT_NE(&logger2, &logger4);
+    ASSERT_NE(&logger4, &logger1);
 }

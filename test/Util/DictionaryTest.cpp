@@ -1,9 +1,11 @@
 #include "Util/Dictionary.h"
+#include "Config/Configuration.h"
 #include "TestUtils.h"
 
 #include "gtest/gtest.h"
 
 using namespace Eihire::Util;
+using namespace Eihire::Config;
 using namespace Eihire::TestUtils;
 
 class DictionaryTest : public ::testing::Test
@@ -12,6 +14,10 @@ protected:
     // 試験開始時に一回だけ実行
     static void SetUpTestCase()
     {
+        std::filesystem::path p = getTestDataPath();
+        p.append("elog.properties");
+        Configuration &config = Configuration::getConfiguration();
+        config.addPropertiesFile(p.generic_string());
     }
 
     // 試験終了時に一回だけ実行
