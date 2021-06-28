@@ -58,46 +58,25 @@ namespace Eihire::Logging
           name_{name},
           ofs_{}
     {
-        if (channel_ == Channel::FILE)
-        {
-            std::string outputFile = Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_PATH");
-            if (outputFile == "")
-            {
-                outputFile = Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_FILE");
-            }
-            if (outputFile == "")
-                outputFile = "eihireoutput.log";
-
-            ofs_.open(outputFile, std::ios_base::out | std::ios_base::app);
-
-            if (!ofs_)
-            {
-                std::ostringstream oss("");
-                oss << "can't open file '" << outputFile << "'.";
-                throw Exception::FileCannotOpenException(oss.str());
-            }
-        }
+        initialize();
     }
 
-    Logger::Logger(const Level level, const std::string &name)
+    Logger::Logger(const std::string &name, const Level level)
         : level_{level},
-          channel_{Channel::CONSOLE},
+          channel_{convertToChannel(Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "CHANNEL"))},
           name_{name},
           ofs_{}
     {
-        // noop
+        initialize();
     }
 
-    Logger::Logger(const Level level, const Channel channel, const std::string &name)
+    Logger::Logger(const std::string &name, const Level level, const Channel channel)
         : level_{level},
           channel_{channel},
           name_{name},
           ofs_{}
     {
-        if (channel_ == Channel::FILE)
-        {
-            ofs_.open("eihireoutput.log", std::ios_base::out | std::ios_base::app);
-        }
+        initialize();
     }
 
     Logger::~Logger()
@@ -165,6 +144,29 @@ namespace Eihire::Logging
         case Channel::FILE:
             output(ofs_, oss.str());
             break;
+        }
+    }
+
+    void Logger::initialize()
+    {
+        if (channel_ == Channel::FILE)
+        {
+            std::string outputFile = Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_PATH");
+            if (outputFile == "")
+            {
+                outputFile = Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_FILE");
+            }
+            if (outputFile == "")
+                outputFile = "eihireoutput.log";
+
+            ofs_.open(outputFile, std::ios_base::out | std::ios_base::app);
+
+            if (!ofs_)
+            {
+                std::ostringstream oss("");
+                oss << "can't open file '" << outputFile << "'.";
+                throw Exception::FileCannotOpenException(E_EXCEPTION_BASE_ARGS(oss.str()));
+            }
         }
     }
 

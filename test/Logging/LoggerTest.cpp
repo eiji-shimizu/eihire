@@ -49,19 +49,19 @@ TEST_F(LoggerTest, Logger_constructor_001)
 
 TEST_F(LoggerTest, Logger_channel_001)
 {
-    Logger logger(Logger::Level::DEBUG, Logger::Channel::CONSOLE, "testlog");
+    Logger logger("testlog", Logger::Level::DEBUG, Logger::Channel::CONSOLE);
     logger.E_INFO("Logger_level_001:test message");
 }
 
 TEST_F(LoggerTest, Logger_channel_002)
 {
-    Logger logger(Logger::Level::DEBUG, Logger::Channel::FILE, "testlog");
+    Logger logger("testlog", Logger::Level::DEBUG, Logger::Channel::FILE);
     logger.E_INFO("Logger_channel_002:test message");
 }
 
 TEST_F(LoggerTest, Logger_level_001)
 {
-    Logger logger(Logger::Level::TRACE, Logger::Channel::FILE, "testlog");
+    Logger logger("testlog", Logger::Level::TRACE, Logger::Channel::FILE);
     logger.E_TRACE("Logger_level_001:TRACE Level");
     logger.E_DEBUG("Logger_level_001:TRACE Level");
     logger.E_INFO("Logger_level_001:TRACE Level");

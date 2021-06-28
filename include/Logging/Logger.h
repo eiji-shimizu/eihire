@@ -33,8 +33,8 @@ namespace Eihire::Logging
         };
 
         Logger(const std::string &name);
-        Logger(const Level level, const std::string &name);
-        Logger(const Level level, const Channel channel, const std::string &name);
+        Logger(const std::string &name, const Level level);
+        Logger(const std::string &name, const Level level, const Channel channel);
         ~Logger();
 
         // コピー禁止
@@ -57,6 +57,7 @@ namespace Eihire::Logging
         static const std::string PROPERTIES_FILE_NAME;
 
     private:
+        void initialize();
         void write(const std::string &level, const char *fileName, const char *functionName, uint64_t line, const std::string &message);
 
         Level level_;
