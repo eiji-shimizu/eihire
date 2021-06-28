@@ -6,8 +6,7 @@
 using namespace Eihire::Util;
 using namespace Eihire::TestUtils;
 
-class FinallyTest : public ::testing::Test
-{
+class FinallyTest : public ::testing::Test {
 protected:
     // 試験開始時に一回だけ実行
     static void SetUpTestCase()
@@ -35,8 +34,7 @@ TEST_F(FinallyTest, finally_move_constructor_001)
     int i = 0;
     {
         ASSERT_EQ(0, i);
-        Finally f1{[&i]
-                   { ++i; }};
+        Finally f1{[&i] { ++i; }};
         Finally f2{std::move(f1)};
         ASSERT_FALSE(f1.isValid());
         ASSERT_TRUE(f2.isValid());
@@ -50,15 +48,12 @@ TEST_F(FinallyTest, finally_move_assign_001)
     int i = 2;
     {
         ASSERT_EQ(2, i);
-        Finally f1{[&i]
-                   { i += 5; }};
-        Finally f2{[&i]
-                   { ++i; }};
+        Finally f1{[&i] { i += 5; }};
+        Finally f2{[&i] { ++i; }};
         f2 = std::move(f1);
         ASSERT_FALSE(f1.isValid());
         ASSERT_TRUE(f2.isValid());
-        Finally f3{[&i]
-                   { i = i * i; }};
+        Finally f3{[&i] { i = i * i; }};
         f1 = std::move(f3);
         ASSERT_FALSE(f3.isValid());
         ASSERT_TRUE(f1.isValid());
@@ -72,8 +67,7 @@ TEST_F(FinallyTest, finally_001)
     ASSERT_EQ(0, i);
     {
         ASSERT_EQ(0, i);
-        Finally f{[&i]
-                  { i = 5; }};
+        Finally f{[&i] { i = 5; }};
         ASSERT_EQ(0, i);
     }
     ASSERT_EQ(5, i);
@@ -85,10 +79,8 @@ TEST_F(FinallyTest, finally_002)
     ASSERT_EQ(0, i);
     {
         ASSERT_EQ(0, i);
-        Finally f1{[&i]
-                   { i = 4; }};
-        Finally f2{[&i]
-                   { i = 5; }};
+        Finally f1{[&i] { i = 4; }};
+        Finally f2{[&i] { i = 5; }};
         ASSERT_EQ(0, i);
     }
     ASSERT_EQ(4, i);
@@ -100,10 +92,8 @@ TEST_F(FinallyTest, finally_003)
     ASSERT_EQ(0, i);
     {
         ASSERT_EQ(0, i);
-        Finally f1{[&i]
-                   { i = 4; }};
-        Finally f2{[&i]
-                   { i = 10; }};
+        Finally f1{[&i] { i = 4; }};
+        Finally f2{[&i] { i = 10; }};
         f1 = std::move(f2);
         ASSERT_EQ(0, i);
     }
@@ -116,10 +106,8 @@ TEST_F(FinallyTest, finally_004)
     ASSERT_EQ(0, i);
     {
         ASSERT_EQ(0, i);
-        Finally f1{[&i]
-                   { i = 4; }};
-        Finally f2{[&i]
-                   { i = 10; }};
+        Finally f1{[&i] { i = 4; }};
+        Finally f2{[&i] { i = 10; }};
         f2 = std::move(f1);
         ASSERT_EQ(0, i);
     }

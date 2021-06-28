@@ -5,10 +5,9 @@
 
 #include <vector>
 
-namespace Eihire::Config
-{
-    class Configuration
-    {
+namespace Eihire::Config {
+
+    class Configuration {
     public:
         // シングルトンのConfigurationオブジェクトを返す
         static Configuration &getConfiguration();

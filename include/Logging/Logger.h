@@ -1,8 +1,8 @@
 #ifndef EIHIRE_LOGGING_LOGGER_INCLUDED
 #define EIHIRE_LOGGING_LOGGER_INCLUDED
 
-#include <string>
 #include <fstream>
+#include <string>
 
 #define E_FATAL(MESSAGE) fatal(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
 #define E_ERROR(MESSAGE) error(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
@@ -11,13 +11,11 @@
 #define E_DEBUG(MESSAGE) debug(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
 #define E_TRACE(MESSAGE) trace(__FILE__, __FUNCTION__, __LINE__, MESSAGE);
 
-namespace Eihire::Logging
-{
-    class Logger
-    {
+namespace Eihire::Logging {
+
+    class Logger {
     public:
-        enum class Level
-        {
+        enum class Level {
             TRACE = 0,
             DEBUG = 1,
             INFO = 2,
@@ -26,8 +24,7 @@ namespace Eihire::Logging
             FATAL = 5
         };
 
-        enum class Channel
-        {
+        enum class Channel {
             CONSOLE,
             FILE
         };

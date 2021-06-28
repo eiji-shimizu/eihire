@@ -1,14 +1,13 @@
 #include "Config/PropertiesMap.h"
 #include "Exception/Exception.h"
 
+#include <filesystem>
 #include <fstream>
 #include <sstream>
-#include <filesystem>
-namespace Eihire::Config
-{
+namespace Eihire::Config {
 
-    namespace
-    {
+    namespace {
+
         std::string getFileName(const std::string &filePath)
         {
             std::filesystem::path p{filePath};
@@ -34,8 +33,7 @@ namespace Eihire::Config
     void PropertiesMap::load()
     {
         std::ifstream ifs((filePath_));
-        if (!ifs)
-        {
+        if (!ifs) {
             std::ostringstream oss("");
             oss << "can't open file '" << filePath_ << "'.";
             throw Exception::FileCannotOpenException(oss.str());
@@ -44,26 +42,21 @@ namespace Eihire::Config
         // この文以降でifsがbad状態になった場合に例外をスローさせる
         ifs.exceptions(ifs.exceptions() | std::ios_base::badbit);
         std::string line;
-        while (ifs)
-        {
+        while (ifs) {
             std::getline(ifs, line);
-            if (line.length() <= 0)
-            {
+            if (line.length() <= 0) {
                 continue;
             }
             std::ostringstream key("");
             std::ostringstream value("");
             bool isComment = false;
             bool flg = false;
-            for (const char c : line)
-            {
-                if (c == '#' || c == '!')
-                {
+            for (const char c : line) {
+                if (c == '#' || c == '!') {
                     isComment = true;
                     break;
                 }
-                if (flg == false && c == '=')
-                {
+                if (flg == false && c == '=') {
                     flg = true;
                     continue;
                 }
@@ -73,11 +66,9 @@ namespace Eihire::Config
                     key << c;
             }
 
-            if (!isComment)
-            {
+            if (!isComment) {
                 // コメント行でないのに'='が見つからなかった場合は構文エラー
-                if (!flg)
-                {
+                if (!flg) {
                     std::ostringstream oss("");
                     oss << "parse error file'" << filePath_ << "'.";
                     throw Exception::ParseException(oss.str());
@@ -102,8 +93,7 @@ namespace Eihire::Config
     {
         std::pair<std::string, std::string> e{key, value};
         auto result = properties_.insert(std::make_pair(key, value));
-        if (!result.second)
-        {
+        if (!result.second) {
             properties_.at(key) = value;
         }
     }

@@ -8,8 +8,7 @@ using namespace Eihire::Util;
 using namespace Eihire::Config;
 using namespace Eihire::TestUtils;
 
-class DictionaryTest : public ::testing::Test
-{
+class DictionaryTest : public ::testing::Test {
 protected:
     // 試験開始時に一回だけ実行
     static void SetUpTestCase()

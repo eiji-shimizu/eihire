@@ -14,16 +14,13 @@ using namespace Eihire::TestUtils;
 TEST(PropertiesMapTest, PropertiesMap_load_001)
 {
     PropertiesMap p;
-    try
-    {
+    try {
         p.load();
     }
-    catch (const FileCannotOpenException &e)
-    {
+    catch (const FileCannotOpenException &e) {
         SUCCEED();
     }
-    catch (const std::exception &e)
-    {
+    catch (const std::exception &e) {
         FAIL() << "We shouldn't get here.";
     }
 }
@@ -58,19 +55,16 @@ TEST(PropertiesMapTest, PropertiesMap_get_002)
     pt.append("Eihire.properties");
     PropertiesMap p(pt.generic_string());
     p.load();
-    try
-    {
+    try {
         p.get("002");
         p.get("#002");
         p.get("003");
         p.get("!003");
     }
-    catch (const std::out_of_range &e)
-    {
+    catch (const std::out_of_range &e) {
         SUCCEED();
     }
-    catch (...)
-    {
+    catch (...) {
         FAIL() << "We shouldn't get here.";
     }
 }

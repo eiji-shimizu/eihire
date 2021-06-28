@@ -3,8 +3,8 @@
 
 #include <filesystem>
 
-namespace Eihire::TestUtils
-{
+namespace Eihire::TestUtils {
+
     // カレントディレクトリからディレクトリ階層を遡りeihireディレクトリまで上る
     // そしてeihire/test/testdataのパスを返す
     // eihireディレクトリが見つからなかった場合は例外を投げる

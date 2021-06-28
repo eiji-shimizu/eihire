@@ -1,27 +1,25 @@
-#include "Util/Dictionary.h"
 #include "Exception/Exception.h"
 #include "Logging/Logger.h"
+#include "Util/Dictionary.h"
 
-#include <sstream>
 #include <cassert>
 #include <iostream>
+#include <sstream>
 
 using namespace Eihire::Logging;
 
-namespace Eihire::Util
-{
-    namespace
-    {
+namespace Eihire::Util {
+
+    namespace {
+
         template <typename T>
         bool isValidCast(const std::any &target)
         {
-            try
-            {
+            try {
                 T t = std::any_cast<T>(target);
                 return true;
             }
-            catch (...)
-            {
+            catch (...) {
                 return false;
             }
         }
@@ -35,8 +33,7 @@ namespace Eihire::Util
                 isValidCast<double>(target) ||
                 isValidCast<int>(target) ||
                 isValidCast<std::string>(target) ||
-                isValidCast<JSON>(target))
-            {
+                isValidCast<JSON>(target)) {
                 return true;
             }
 
@@ -46,16 +43,13 @@ namespace Eihire::Util
         template <typename T, typename K>
         T getT(const std::map<K, std::any> &m, const K &key)
         {
-            try
-            {
+            try {
                 return std::any_cast<T>(m.at(key));
             }
-            catch (const std::exception &e)
-            {
+            catch (const std::exception &e) {
                 throw Eihire::Exception::ExceptionBase(E_EXCEPTION_BASE_ARGS(""), e);
             }
-            catch (...)
-            {
+            catch (...) {
                 throw;
             }
         }
@@ -69,8 +63,7 @@ namespace Eihire::Util
 
         std::string formatJsonElementValue(const std::any &value)
         {
-            if (value.type() == typeid(JSON))
-            {
+            if (value.type() == typeid(JSON)) {
             }
             return "";
         }
@@ -138,8 +131,7 @@ namespace Eihire::Util
     {
         std::ostringstream oss;
         oss << '{';
-        for (const auto &p : elements())
-        {
+        for (const auto &p : elements()) {
             const std::string name = formatJsonElementName(p.first);
             const std::string value = formatJsonElementValue(p.second);
         }

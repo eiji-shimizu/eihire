@@ -3,10 +3,9 @@
 
 #include <functional>
 
-namespace Eihire::Util
-{
-    class Finally final
-    {
+namespace Eihire::Util {
+
+    class Finally final {
     public:
         explicit Finally(std::function<void()> f, bool exceptionHandling = true)
             : cleanUpFunction_{f},
@@ -17,12 +16,10 @@ namespace Eihire::Util
         ~Finally()
         {
             if (exceptionHandling_)
-                try
-                {
+                try {
                     cleanUpFunction_();
                 }
-                catch (...)
-                {
+                catch (...) {
                     // ignore
                 }
             else

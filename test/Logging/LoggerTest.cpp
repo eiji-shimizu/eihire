@@ -1,7 +1,7 @@
 #include "Logging/Logger.h"
 #include "Config/Configuration.h"
-#include "Util/Finally.h"
 #include "TestUtils.h"
+#include "Util/Finally.h"
 
 #include "gtest/gtest.h"
 
@@ -9,8 +9,7 @@ using namespace Eihire::Logging;
 using namespace Eihire::Config;
 using namespace Eihire::TestUtils;
 
-class LoggerTest : public ::testing::Test
-{
+class LoggerTest : public ::testing::Test {
 protected:
     // 試験開始時に一回だけ実行
     static void SetUpTestCase()

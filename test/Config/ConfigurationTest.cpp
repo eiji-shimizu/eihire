@@ -6,8 +6,7 @@
 using namespace Eihire::Config;
 using namespace Eihire::TestUtils;
 
-class ConfigurationTest : public ::testing::Test
-{
+class ConfigurationTest : public ::testing::Test {
 protected:
     // 試験開始時に一回だけ実行
     static void SetUpTestCase()
@@ -38,12 +37,10 @@ TEST_F(ConfigurationTest, Configuration_getConfiguration_001)
 {
     Configuration &config1 = Configuration::getConfiguration();
     Configuration &config2 = Configuration::getConfiguration();
-    if (&config1 == &config2)
-    {
+    if (&config1 == &config2) {
         SUCCEED();
     }
-    else
-    {
+    else {
         FAIL() << "We shouldn't get here.";
     }
 }
@@ -62,59 +59,47 @@ TEST_F(ConfigurationTest, Configuration_get_001)
 TEST_F(ConfigurationTest, Configuration_get_002)
 {
     Configuration &config = Configuration::getConfiguration();
-    try
-    {
+    try {
         config.get("002");
         FAIL() << "We shouldn't get here.";
     }
-    catch (const std::out_of_range &e)
-    {
+    catch (const std::out_of_range &e) {
         SUCCEED();
     }
-    catch (...)
-    {
+    catch (...) {
         FAIL() << "We shouldn't get here.";
     }
 
-    try
-    {
+    try {
         config.get("#002");
         FAIL() << "We shouldn't get here.";
     }
-    catch (const std::out_of_range &e)
-    {
+    catch (const std::out_of_range &e) {
         SUCCEED();
     }
-    catch (...)
-    {
+    catch (...) {
         FAIL() << "We shouldn't get here.";
     }
 
-    try
-    {
+    try {
         config.get("003");
         FAIL() << "We shouldn't get here.";
     }
-    catch (const std::out_of_range &e)
-    {
+    catch (const std::out_of_range &e) {
         SUCCEED();
     }
-    catch (...)
-    {
+    catch (...) {
         FAIL() << "We shouldn't get here.";
     }
 
-    try
-    {
+    try {
         config.get("!003");
         FAIL() << "We shouldn't get here.";
     }
-    catch (const std::out_of_range &e)
-    {
+    catch (const std::out_of_range &e) {
         SUCCEED();
     }
-    catch (...)
-    {
+    catch (...) {
         FAIL() << "We shouldn't get here.";
     }
 }
@@ -146,22 +131,18 @@ TEST_F(ConfigurationTest, Configuration_get_004)
     p = p.append("other.properties");
     config.addPropertiesFile(p.generic_string());
 
-    try
-    {
+    try {
         config.get("other.properties", "eihire1");
         FAIL() << "We shouldn't get here.";
     }
-    catch (const std::out_of_range &e)
-    {
+    catch (const std::out_of_range &e) {
         SUCCEED();
     }
-    try
-    {
+    try {
         config.get("Eihire.properties", "other1");
         FAIL() << "We shouldn't get here.";
     }
-    catch (const std::out_of_range &e)
-    {
+    catch (const std::out_of_range &e) {
         SUCCEED();
     }
 }

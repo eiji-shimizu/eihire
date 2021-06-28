@@ -6,8 +6,7 @@
 using namespace Eihire::Program;
 using namespace Eihire::TestUtils;
 
-class ProgramTest : public ::testing::Test
-{
+class ProgramTest : public ::testing::Test {
 protected:
     // 試験開始時に一回だけ実行
     static void SetUpTestCase()
@@ -35,12 +34,10 @@ TEST_F(ProgramTest, Program_instance_001)
 {
     Program &insA = Program::instance();
     Program &insB = Program::instance();
-    if (&insA == &insB)
-    {
+    if (&insA == &insB) {
         SUCCEED();
     }
-    else
-    {
+    else {
         FAIL() << "We shouldn't get here.";
     }
 }

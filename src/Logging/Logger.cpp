@@ -2,19 +2,19 @@
 #include "Config/Configuration.h"
 #include "Exception/Exception.h"
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 using namespace Eihire::Config;
 
-namespace Eihire::Logging
-{
+namespace Eihire::Logging {
+
     const std::string Logger::PROPERTIES_FILE_NAME = "elog.properties";
 
-    namespace
-    {
+    namespace {
+
         Logger::Level convertToLevel(const std::string &level)
         {
             if (level == "TRACE")
@@ -81,8 +81,7 @@ namespace Eihire::Logging
 
     Logger::~Logger()
     {
-        if (ofs_.is_open())
-        {
+        if (ofs_.is_open()) {
             ofs_.close();
         }
     }
@@ -127,8 +126,7 @@ namespace Eihire::Logging
     {
         std::filesystem::path p{fileName};
         std::string fLevel = level;
-        while (fLevel.length() < 5)
-        {
+        while (fLevel.length() < 5) {
             fLevel.append(" ");
         }
         std::ostringstream oss("");
@@ -137,8 +135,7 @@ namespace Eihire::Logging
         oss << message;
         oss << " " << name_ << " ";
 
-        switch (channel_)
-        {
+        switch (channel_) {
         case Channel::CONSOLE:
             output(std::cout, oss.str());
             break;
@@ -150,11 +147,9 @@ namespace Eihire::Logging
 
     void Logger::initialize()
     {
-        if (channel_ == Channel::FILE)
-        {
+        if (channel_ == Channel::FILE) {
             std::string outputFile = Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_PATH");
-            if (outputFile == "")
-            {
+            if (outputFile == "") {
                 outputFile = Configuration::getConfiguration().find(PROPERTIES_FILE_NAME, "OUTPUT_FILE");
             }
             if (outputFile == "")
@@ -162,8 +157,7 @@ namespace Eihire::Logging
 
             ofs_.open(outputFile, std::ios_base::out | std::ios_base::app);
 
-            if (!ofs_)
-            {
+            if (!ofs_) {
                 std::ostringstream oss("");
                 oss << "can't open file '" << outputFile << "'.";
                 throw Exception::FileCannotOpenException(E_EXCEPTION_BASE_ARGS(oss.str()));

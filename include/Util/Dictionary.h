@@ -1,16 +1,15 @@
 #ifndef Eihire_Util_Dictionary_INCLUDED
 #define Eihire_Util_Dictionary_INCLUDED
 
-#include <string>
-#include <map>
-#include <vector>
 #include <any>
+#include <map>
+#include <string>
+#include <vector>
 
-namespace Eihire::Util
-{
+namespace Eihire::Util {
+
     template <typename K, typename V>
-    class Dictionary
-    {
+    class Dictionary {
     public:
         Dictionary() = default;
         ~Dictionary() = default;
@@ -36,8 +35,7 @@ namespace Eihire::Util
         virtual void set(const K &key, const V &value)
         {
             auto result = elements_.insert(std::make_pair(key, value));
-            if (!result.second)
-            {
+            if (!result.second) {
                 elements_.at(key) = value;
             }
         }
@@ -53,8 +51,7 @@ namespace Eihire::Util
 
     using JSON_BASE = Dictionary<std::string, std::any>;
 
-    class JSON : public JSON_BASE
-    {
+    class JSON : public JSON_BASE {
     public:
         JSON();
         ~JSON();

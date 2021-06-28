@@ -4,13 +4,12 @@
 #include "Config/Configuration.h"
 #include "Logging/Logger.h"
 
-#include <string>
 #include <filesystem>
+#include <string>
 
-namespace Eihire::Program
-{
-    class Program
-    {
+namespace Eihire::Program {
+
+    class Program {
     public:
         static Program &instance();
         static Program &initialize(const std::string configurationDirectoryPath);

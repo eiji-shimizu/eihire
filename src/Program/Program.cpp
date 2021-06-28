@@ -1,8 +1,8 @@
 #include "Program/Program.h"
 #include "Config/Configuration.h"
 
-namespace Eihire::Program
-{
+namespace Eihire::Program {
+
     const std::string Program::DEFAULT_PROPERTIES_FILE_NAME = "econf.properties";
 
     Program &Program::instance()

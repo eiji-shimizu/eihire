@@ -1,17 +1,16 @@
 #ifndef EIHIRE_EXCEPTION_Exception_INCLUDED
 #define EIHIRE_EXCEPTION_Exception_INCLUDED
 
+#include <filesystem>
 #include <stdexcept>
 #include <string>
-#include <filesystem>
 #include <type_traits>
 
 #define E_EXCEPTION_BASE_ARGS(MESSAGE) (strrchr(__FILE__, std::filesystem::path::preferred_separator) ? strrchr(__FILE__, std::filesystem::path::preferred_separator) + 1 : __FILE__), __FUNCTION__, __LINE__, MESSAGE
 
-namespace Eihire::Exception
-{
-    class ExceptionBase : public std::exception
-    {
+namespace Eihire::Exception {
+
+    class ExceptionBase : public std::exception {
     public:
         template <typename InnerException, typename = std::enable_if_t<std::is_base_of_v<std::exception, InnerException>>>
         ExceptionBase(const char *fileName,
@@ -53,8 +52,7 @@ namespace Eihire::Exception
         std::string messages_;
     };
 
-    class FileCannotOpenException : public ExceptionBase
-    {
+    class FileCannotOpenException : public ExceptionBase {
     public:
         template <typename InnerException, typename = std::enable_if_t<std::is_base_of_v<std::exception, InnerException>>>
         FileCannotOpenException(const char *fileName,
@@ -86,8 +84,7 @@ namespace Eihire::Exception
         }
     };
 
-    class ParseException : public ExceptionBase
-    {
+    class ParseException : public ExceptionBase {
     public:
         template <typename InnerException, typename = std::enable_if_t<std::is_base_of_v<std::exception, InnerException>>>
         ParseException(const char *fileName,

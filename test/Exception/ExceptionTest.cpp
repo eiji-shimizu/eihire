@@ -6,8 +6,7 @@
 using namespace Eihire::Exception;
 using namespace Eihire::TestUtils;
 
-class ExceptionTest : public ::testing::Test
-{
+class ExceptionTest : public ::testing::Test {
 protected:
     // 試験開始時に一回だけ実行
     static void SetUpTestCase()
@@ -32,24 +31,20 @@ protected:
 
 TEST_F(ExceptionTest, Exception_Base_001)
 {
-    try
-    {
+    try {
         throw ExceptionBase("fileName", "function", 100, "test message", std::logic_error{"inner message"});
     }
-    catch (const std::exception &e)
-    {
+    catch (const std::exception &e) {
         std::cerr << e.what() << '\n';
     }
 }
 
 TEST_F(ExceptionTest, Exception_Base_002)
 {
-    try
-    {
+    try {
         throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message"), std::logic_error{"inner message"});
     }
-    catch (const std::exception &e)
-    {
+    catch (const std::exception &e) {
         std::cerr << e.what() << '\n';
     }
 }
@@ -60,33 +55,25 @@ TEST_F(ExceptionTest, Exception_Base_003)
     // ExceptionBase eb{E_EXCEPTION_BASE_ARGS("test"), 1};
     // ExceptionBase eb{E_EXCEPTION_BASE_ARGS("test"), "abc"};
     std::cout << eb.what() << std::endl;
-    try
-    {
-        try
-        {
-            try
-            {
-                try
-                {
+    try {
+        try {
+            try {
+                try {
                     throw std::logic_error{"inner message"};
                 }
-                catch (const std::exception &e)
-                {
+                catch (const std::exception &e) {
                     throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message1"), e);
                 }
             }
-            catch (const std::exception &e)
-            {
+            catch (const std::exception &e) {
                 throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message2"), e);
             }
         }
-        catch (const std::exception &e)
-        {
+        catch (const std::exception &e) {
             throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message3"), e);
         }
     }
-    catch (const std::exception &e)
-    {
+    catch (const std::exception &e) {
         std::cout << e.what() << std::endl;
         const ExceptionBase *pe = dynamic_cast<const ExceptionBase *>(&e);
         if (pe != nullptr)
@@ -97,33 +84,25 @@ TEST_F(ExceptionTest, Exception_Base_003)
 
 TEST_F(ExceptionTest, Exception_Base_004)
 {
-    try
-    {
-        try
-        {
-            try
-            {
-                try
-                {
+    try {
+        try {
+            try {
+                try {
                     throw std::logic_error("inner message");
                 }
-                catch (const std::exception &e)
-                {
+                catch (const std::exception &e) {
                     throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message1"), e);
                 }
             }
-            catch (const std::exception &e)
-            {
+            catch (const std::exception &e) {
                 throw;
             }
         }
-        catch (const std::exception &e)
-        {
+        catch (const std::exception &e) {
             throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message3"), e);
         }
     }
-    catch (const std::exception &e)
-    {
+    catch (const std::exception &e) {
         std::cerr << e.what() << '\n';
     }
 }
@@ -210,69 +189,53 @@ TEST_F(ExceptionTest, Exception_Base_005)
 
 TEST_F(ExceptionTest, ParseException_001)
 {
-    try
-    {
-        try
-        {
-            try
-            {
-                try
-                {
+    try {
+        try {
+            try {
+                try {
                     throw std::logic_error("inner message");
                 }
-                catch (const std::exception &e)
-                {
+                catch (const std::exception &e) {
                     throw ExceptionBase(E_EXCEPTION_BASE_ARGS("test message1"), e);
                 }
             }
-            catch (const std::exception &e)
-            {
+            catch (const std::exception &e) {
                 throw ParseException(E_EXCEPTION_BASE_ARGS("parse error"), e);
             }
         }
-        catch (const std::exception &e)
-        {
+        catch (const std::exception &e) {
             throw;
         }
     }
-    catch (const std::exception &e)
-    {
+    catch (const std::exception &e) {
         std::cerr << e.what() << '\n';
     }
 }
 
 TEST_F(ExceptionTest, FileCannotOpenException_001)
 {
-    try
-    {
-        try
-        {
-            try
-            {
-                try
-                {
+    try {
+        try {
+            try {
+                try {
                     throw FileCannotOpenException("inner message1");
                 }
-                catch (const std::exception &e)
-                {
+                catch (const std::exception &e) {
                     std::cerr << e.what() << '\n';
                     throw ParseException(E_EXCEPTION_BASE_ARGS("inner message2"), e);
                 }
             }
-            catch (const std::exception &e)
-            {
+            catch (const std::exception &e) {
                 std::cerr << e.what() << '\n';
                 throw FileCannotOpenException(E_EXCEPTION_BASE_ARGS("file can not open."));
             }
         }
-        catch (const std::exception &e)
-        {
+        catch (const std::exception &e) {
             std::cerr << e.what() << '\n';
             throw FileCannotOpenException(E_EXCEPTION_BASE_ARGS("file can not open again."), e);
         }
     }
-    catch (const std::exception &e)
-    {
+    catch (const std::exception &e) {
         std::cerr << e.what() << '\n';
     }
 }

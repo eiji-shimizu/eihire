@@ -1,13 +1,12 @@
 #ifndef EIHIRE_CONFIG_PropertiesMap_INCLUDED
 #define EIHIRE_CONFIG_PropertiesMap_INCLUDED
 
-#include <string>
 #include <map>
+#include <string>
 
-namespace Eihire::Config
-{
-    class PropertiesMap
-    {
+namespace Eihire::Config {
+
+    class PropertiesMap {
     public:
         PropertiesMap();
         ~PropertiesMap();

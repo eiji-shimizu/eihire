@@ -3,19 +3,17 @@
 
 #include <iostream>
 
-namespace Eihire::Config
-{
-    namespace
-    {
+namespace Eihire::Config {
+
+    namespace {
+
         void addAndLoad(std::vector<PropertiesMap> &propertiesMapList, const std::vector<std::string> &filePathList)
         {
-            for (const auto &filePath : filePathList)
-            {
+            for (const auto &filePath : filePathList) {
                 PropertiesMap p{filePath};
                 propertiesMapList.push_back(p);
             }
-            for (PropertiesMap &p : propertiesMapList)
-            {
+            for (PropertiesMap &p : propertiesMapList) {
                 p.load();
             }
         }
@@ -52,12 +50,9 @@ namespace Eihire::Config
 
     std::string Configuration::find(const std::string &fileName, const std::string &key) const
     {
-        for (const PropertiesMap &p : propertiesMapList_)
-        {
-            if (fileName != "")
-            {
-                if (p.fileName() == fileName)
-                {
+        for (const PropertiesMap &p : propertiesMapList_) {
+            if (fileName != "") {
+                if (p.fileName() == fileName) {
                     if (p.isContain(key))
                         return p.get(key);
                     return "";
@@ -81,10 +76,8 @@ namespace Eihire::Config
 
     std::string Configuration::get(const std::string &fileName, const std::string &key) const
     {
-        if (fileName != "")
-        {
-            for (const PropertiesMap &p : propertiesMapList_)
-            {
+        if (fileName != "") {
+            for (const PropertiesMap &p : propertiesMapList_) {
                 if (p.fileName() == fileName)
                     return p.get(key);
                 else
@@ -94,8 +87,7 @@ namespace Eihire::Config
             return propertiesMapList_.at(propertiesMapList_.size()).properties().at(key);
         }
 
-        for (const PropertiesMap &p : propertiesMapList_)
-        {
+        for (const PropertiesMap &p : propertiesMapList_) {
             if (p.isContain(key))
                 return p.get(key);
             else
@@ -115,12 +107,10 @@ namespace Eihire::Config
     {
         std::vector<PropertiesMap> additionalList;
         addAndLoad(additionalList, filePathList);
-        for (const auto &p : additionalList)
-        {
+        for (const auto &p : additionalList) {
             propertiesMapList_.push_back(p);
         }
-        for (const auto &s : filePathList)
-        {
+        for (const auto &s : filePathList) {
             filePathList_.push_back(s);
         }
     }
