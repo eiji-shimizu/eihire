@@ -47,7 +47,7 @@ namespace Eihire::Util {
                 return std::any_cast<T>(m.at(key));
             }
             catch (const std::exception &e) {
-                throw Eihire::Exception::ExceptionBase(E_EXCEPTION_BASE_ARGS(""), e);
+                throw Eihire::Exception::ExceptionBase(E_EXCEPTION_BASE_ARGS(e.what()));
             }
             catch (...) {
                 throw;
